@@ -208,7 +208,37 @@ input:focus{
 
     box-shadow:0 0 15px rgba(109,40,217,.25);
 }
+select{
 
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:12px;
+
+    background:#f3f4f6;
+
+    font-size:15px;
+
+    color:#333;
+
+    transition:.3s;
+
+    cursor:pointer;
+}
+
+select:focus{
+
+    background:white;
+
+    border:2px solid #6D28D9;
+
+    box-shadow:0 0 15px rgba(109,40,217,.25);
+}
 button{
 
     margin-top:8px;

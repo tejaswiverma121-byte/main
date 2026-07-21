@@ -17,7 +17,7 @@ app.use(cookieParser());
 
 //routes
 
-app.get("/firstpage",(req,res)=>{
+app.get("/",(req,res)=>{
     res.render("index");
 })
 
@@ -39,6 +39,9 @@ app.post("/create",(req,res)=>{
             }
         }
     */
+   if(req.body.role!=="student"&&req.body.role!=="instructor"){
+    return res.send("Invalid Role Selected");
+   }
     bcrypt.genSalt(10,(err,salt)=>{
         bcrypt.hash(req.body.password,salt,async(err,hash)=>{
             
@@ -61,20 +64,29 @@ app.post("/create",(req,res)=>{
                 //create a cookie and send it to the browser
                 let token=jwt.sign({userid:user._id,email:user.email,role:user.role},"shhh");
                 res.cookie("token",token);
+                res.redirect("/login/" + user.role);
             }
             
         })
     })
 
 })
+//student+instructor login
+ app.get("/login/:role",(req,res)=>{
+    const role=req.params.role;
+    if(role!=="student"&&role!=="instructor"){
+        return res.send("Invalid login type");
+    }
+    res.render("login",{role:role});
+ })
 
 
-app.get("/login",(req,res)=>{
-    res.render("login");
-})
+app.post("/login/:role",async(req,res)=>{
+    const expectedRole = req.params.role;
 
-
-app.post("/login",async(req,res)=>{
+    if(expectedRole !== "student" && expectedRole !== "instructor"){
+        return res.send("Invalid login type");
+    }
     /*req={
         method:post,
         headers:{____},
@@ -89,19 +101,28 @@ app.post("/login",async(req,res)=>{
     
     //find the userdoc which has email id as "aksharaguru123@gmail.com"
     let user=await userModel.findOne({email:req.body.email});
+    if(!user){
+        return res.send("user does not exist!!");
+    }
 
+    if(user.role !== expectedRole){
+        return res.send(`This account is registered as ${user.role}, please use the ${user.role} login`);
+    }
     if(user){
         //verify the password
         bcrypt.compare(req.body.password,user.password,async(err,result)=>{
+            if(!result){
+            return res.send("you cannot login!!");
+            }
             if(result){
+                if(user.role==="instructor"&&!user.isApproved){
+                    return res.send("Your instructor account is pending admin approval.");
+                }
                 if(user.role==="student"){
                     res.render("studentdashboard",{user:user});
                 }
-                else if(user.role==="instructor"){
-                    res.render("instructor",{user:user});
-                }
-                else if(user.role==="admin"){
-                    res.render("admin",{user:user});
+                else if(user.role === "instructor"){
+                res.render("instructor",{user:user});
                 }
             }
             else{
@@ -109,13 +130,35 @@ app.post("/login",async(req,res)=>{
             }
         })
     }
-    else{
-        res.send("user does not exist!!");
-    }
-
 })
 
+//admin login
 
+app.get("/admin/login",(req,res)=>{
+    res.render("adminlogin");
+})
+app.post("/adminlogin",async(req,res)=>{
+    let user = await userModel.findOne({email:req.body.email, role:"admin"});
+
+    if(!user){
+        return res.send("Invalid admin credentials");
+    }
+
+    bcrypt.compare(req.body.password, user.password, async(err,result)=>{
+        if(!result){
+            return res.send("Invalid admin credentials");
+        }
+        let pendingInstructors = await userModel.find({role:"instructor", isApproved:false});
+        res.render("admin", { user:user, pendingInstructors:pendingInstructors });
+    })
+})
+
+app.post("/admin/approve/:id", async(req,res)=>{
+    await userModel.findByIdAndUpdate(req.params.id, { isApproved:true });
+    res.redirect("/admin/login");
+})
+
+//logout
 app.get("/logout",(req,res)=>{
     res.cookie("token","");
     res.redirect("/login");

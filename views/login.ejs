@@ -37,13 +37,13 @@
 
         <div class="login-card">
 
-            <h2>Login</h2>
+            <h2><%= role.charAt(0).toUpperCase() + role.slice(1) %> Login</h2>
 
             <p class="subtitle">
                 Enter your credentials
             </p>
 
-            <form action="/login" method="POST">
+            <form action="/login/<%= role %>" method="POST">
 
                 <input type="email" name="email" placeholder="Email Address" required>
 
