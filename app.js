@@ -82,60 +82,6 @@ app.post("/create",(req,res)=>{
     res.render("login",{role:role});
  })
 
-//PROTECTED ROUTES!!!
-
-app.get("/studentdashboard",isLoggedIn,async (req,res,next)=>{
-    /*req={
-        METHOD:"GET",
-        headers:{___},
-        userinfo:{
-            userid:----,
-            email:-----,
-            role:------
-        }
-    }*/
-    let user=await userModel.findOne({_id:req.userinfo.userid});
-    if(user.role!=="student"){
-        return res.send("Access denied!!");
-    }
-    
-})
-
-app.get("/instructor",isLoggedIn,async (req,res,next)=>{
-
-    /*req={
-        METHOD:"GET",
-        headers:{___},
-        userinfo:{
-            userid:----,
-            email:-----,
-            role:------
-        }
-    }*/
-    let user=await userModel.findOne({_id:req.userinfo.userid});
-    if(user.role!=="instructor"){
-        return res.send("Access denied!!");
-    }
-    
-})
-app.get("/instructor",isLoggedIn,async (req,res,next)=>{
-    
-    /*req={
-        METHOD:"GET",
-        headers:{___},
-        userinfo:{
-            userid:----,
-            email:-----,
-            role:------
-        }
-    }*/
-    let user=await userModel.findOne({_id:req.userinfo.userid});
-    if(user.role!=="instructor"){
-        return res.send("Access denied!!");
-    }
-    
-})
-
 app.post("/login/:role",async(req,res)=>{
     const expectedRole = req.params.role;
 
