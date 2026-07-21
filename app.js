@@ -21,10 +21,10 @@ app.get("/firstpage",(req,res)=>{
     res.render("index");
 })
 
-
 app.get("/create",(req,res)=>{
     res.render("createaccount");
 })
+
 
 app.post("/create",(req,res)=>{
     /*  req={
@@ -68,13 +68,66 @@ app.post("/create",(req,res)=>{
 
 })
 
+//PROTECTED ROUTES!!!
+
+app.get("/studentdashboard",isLoggedIn,async (req,res,next)=>{
+    /*req={
+        METHOD:"GET",
+        headers:{___},
+        userinfo:{
+            userid:----,
+            email:-----,
+            role:------
+        }
+    }*/
+    let user=await userModel.findOne({_id:req.userinfo.userid});
+    if(user.role!=="student"){
+        return res.send("Access denied!!");
+    }
+    
+})
+
+app.get("/instructor",isLoggedIn,async (req,res,next)=>{
+
+    /*req={
+        METHOD:"GET",
+        headers:{___},
+        userinfo:{
+            userid:----,
+            email:-----,
+            role:------
+        }
+    }*/
+    let user=await userModel.findOne({_id:req.userinfo.userid});
+    if(user.role!=="instructor"){
+        return res.send("Access denied!!");
+    }
+    
+})
+app.get("/instructor",isLoggedIn,async (req,res,next)=>{
+    
+    /*req={
+        METHOD:"GET",
+        headers:{___},
+        userinfo:{
+            userid:----,
+            email:-----,
+            role:------
+        }
+    }*/
+    let user=await userModel.findOne({_id:req.userinfo.userid});
+    if(user.role!=="instructor"){
+        return res.send("Access denied!!");
+    }
+    
+})
 
 app.get("/login",(req,res)=>{
     res.render("login");
 })
 
-
 app.post("/login",async(req,res)=>{
+
     /*req={
         method:post,
         headers:{____},
@@ -82,35 +135,43 @@ app.post("/login",async(req,res)=>{
             email:"aksharaguru123@gmail.com",
             password:"Vallalar999"
         }
-        cookie:{
-            token:"sgjdhgarchdletchwrt#%25dgwinmxiafr37493#....."
-        }
+        
     }*/
+
     
     //find the userdoc which has email id as "aksharaguru123@gmail.com"
+
     let user=await userModel.findOne({email:req.body.email});
 
     if(user){
         //verify the password
         bcrypt.compare(req.body.password,user.password,async(err,result)=>{
             if(result){
+
                 if(user.role==="student"){
                     res.render("studentdashboard",{user:user});
                 }
-                else if(user.role==="instructor"){
+                if(user.role==="instructor"){
                     res.render("instructor",{user:user});
+                    
                 }
                 else if(user.role==="admin"){
                     res.render("admin",{user:user});
                 }
+                //create a token and send a cookie
+                let token=jwt.sign({userid:user._id,email:user.email,role:user.role},"shhh");
+                res.cookie("token",token);
+
             }
             else{
-                 res.send("you cannot login!!");
+                //res.send("you cannot login!!");
+                res.render("loginfailed");
             }
         })
     }
     else{
-        res.send("user does not exist!!");
+        //res.send("user does not exist!!");
+        res.render("usernotfound");
     }
 
 })
@@ -124,7 +185,8 @@ app.get("/logout",(req,res)=>{
 
 function isLoggedIn(req,res,next){
     if(req.cookies.token===""){
-        res.send("your are logged out,Please Login");
+        //res.send("your are logged out,Please Login");
+        res.render("notloggedin");
     }
     else{
         let data=jwt.verify(req.cookies.token,"shhh");

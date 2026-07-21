@@ -1,0 +1,176 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:linear-gradient(
+        135deg,
+        #4F46E5,
+        #6D28D9,
+        #9333EA
+    );
+
+    overflow:hidden;
+}
+
+
+/* Decorative circles */
+
+body::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:280px;
+    height:280px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.08);
+
+    top:-70px;
+    left:-70px;
+}
+
+body::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:220px;
+    height:220px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.06);
+
+    bottom:-60px;
+    right:-60px;
+}
+
+.error-card{
+
+    width:500px;
+
+    background:rgba(17,24,39,.92);
+
+    backdrop-filter:blur(14px);
+
+    border-radius:24px;
+
+    padding:50px 40px;
+
+    text-align:center;
+
+    box-shadow:0 25px 60px rgba(0,0,0,.45);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    z-index:5;
+}
+
+.error-icon{
+
+    width:95px;
+    height:95px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    background:#EF4444;
+
+    color:white;
+
+    font-size:42px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    box-shadow:0 0 25px rgba(239,68,68,.45);
+
+    margin-bottom:25px;
+}
+
+h1{
+
+    color:white;
+
+    font-size:34px;
+
+    margin-bottom:18px;
+}
+
+p{
+
+    color:#d1d5db;
+
+    line-height:1.8;
+
+    font-size:16px;
+
+    margin-bottom:35px;
+}
+
+.btn-group{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:18px;
+}
+
+.btn-group a{
+
+    text-decoration:none;
+
+    padding:14px 30px;
+
+    border-radius:12px;
+
+    font-weight:600;
+
+    transition:.3s;
+}
+
+.retry-btn{
+
+    background:#EF4444;
+
+    color:white;
+}
+
+.retry-btn:hover{
+
+    background:#DC2626;
+
+    transform:translateY(-3px);
+}
+
+.home-btn{
+
+    border:2px solid #8B5CF6;
+
+    color:white;
+}
+
+.home-btn:hover{
+
+    background:#8B5CF6;
+
+    transform:translateY(-3px);
+}
