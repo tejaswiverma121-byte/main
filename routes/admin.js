@@ -1,6 +1,7 @@
 const express   = require('express');
 const router    = express.Router();
 const userModel = require('../models/user');
+const courseModel = require('../models/course');
 const { isAdmin } = require('../middlewares/auth');
 
 router.get('/dashboard/admin', isAdmin, async (req, res) => {
@@ -46,6 +47,28 @@ router.get('/admin/instructors', isAdmin, async (req, res) => {
         });
     } catch (err) {
         console.error('Error loading admin instructors page:', err);
+        res.redirect('/dashboard/admin');
+    }
+});
+
+router.get('/admin/courses', isAdmin, async (req, res) => {
+    try {
+        const user = await userModel.findById(req.userinfo.userid);
+        const courses = await courseModel.find().sort({ _id: -1 });
+        const instructors = await userModel.find({ role: 'instructor' });
+        const publishedCount = courses.filter(c => c.status === 'Published').length;
+        const draftCount = courses.filter(c => c.status === 'Draft').length;
+        res.render('admin_courses', {
+            user,
+            courses,
+            instructors,
+            totalCourses: courses.length,
+            publishedCount,
+            draftCount,
+            activePage: 'courses'
+        });
+    } catch (err) {
+        console.error('Error loading admin courses page:', err);
         res.redirect('/dashboard/admin');
     }
 });
