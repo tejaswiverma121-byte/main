@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= activeCourse ? activeCourse.title + ' — Doubts & Chat' : 'Messages' %> | LearnHub</title>
+    <link rel="stylesheet" href="/stylesheets/studentdashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        .chat-container {
+            display: flex;
+            height: calc(100vh - 120px);
+            background: #211C44;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            margin-top: 15px;
+        }
+
+        /* Course list column */
+        .courses-panel {
+            width: 320px;
+            background: #1B1735;
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .courses-panel-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .courses-panel-header h3 {
+            color: white;
+            font-size: 18px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .courses-panel-header p {
+            color: #9f9f9f;
+            font-size: 13px;
+            margin: 4px 0 0;
+        }
+
+        .course-item-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .course-chat-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px;
+            border-radius: 14px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.25s ease;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid transparent;
+        }
+
+        .course-chat-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .course-chat-card.active {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.25), rgba(147, 51, 234, 0.25));
+            border-color: #8B5CF6;
+        }
+
+        .course-chat-card img {
+            width: 46px;
+            height: 46px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .course-chat-info h4 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.3;
+            color: white;
+        }
+
+        .course-chat-info span {
+            font-size: 12px;
+            color: #BEBEBE;
+            display: block;
+            margin-top: 3px;
+        }
+
+        /* Main Chat Window */
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #15132B;
+        }
+
+        .chat-header {
+            padding: 20px 28px;
+            background: #1B1735;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header-info h2 {
+            margin: 0;
+            font-size: 20px;
+            color: white;
+        }
+
+        .chat-header-info p {
+            margin: 4px 0 0;
+            color: #BEBEBE;
+            font-size: 13px;
+        }
+
+        .messages-history {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .msg-bubble {
+            max-width: 68%;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.25s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .msg-bubble.self {
+            align-self: flex-end;
+        }
+
+        .msg-bubble.other {
+            align-self: flex-start;
+        }
+
+        .msg-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            font-size: 12px;
+        }
+
+        .msg-bubble.self .msg-meta {
+            justify-content: flex-end;
+        }
+
+        .sender-name {
+            font-weight: 600;
+            color: white;
+        }
+
+        .role-badge {
+            padding: 2px 8px;
+            border-radius: 99px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .role-badge.instructor {
+            background: rgba(139, 92, 246, 0.25);
+            color: #A78BFA;
+            border: 1px solid #8B5CF6;
+        }
+
+        .role-badge.student {
+            background: rgba(59, 130, 246, 0.25);
+            color: #60A5FA;
+            border: 1px solid #3B82F6;
+        }
+
+        .role-badge.admin {
+            background: rgba(239, 68, 68, 0.25);
+            color: #FCA5A5;
+            border: 1px solid #EF4444;
+        }
+
+        .msg-text {
+            padding: 14px 18px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .msg-bubble.self .msg-text {
+            background: linear-gradient(135deg, #4F46E5, #9333EA);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .msg-bubble.other .msg-text {
+            background: #211C44;
+            color: #E2E8F0;
+            border-bottom-left-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .msg-time {
+            font-size: 11px;
+            color: #94A3B8;
+            margin-top: 4px;
+        }
+
+        .msg-bubble.self .msg-time {
+            text-align: right;
+        }
+
+        /* Input Form */
+        .chat-input-area {
+            padding: 18px 24px;
+            background: #1B1735;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            background: #15132B;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            padding: 14px 20px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        .chat-input-area input:focus {
+            border-color: #8B5CF6;
+            box-shadow: 0 0 12px rgba(139, 92, 246, 0.3);
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #4F46E5, #9333EA);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 14px rgba(139, 92, 246, 0.3);
+        }
+
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(139, 92, 246, 0.45);
+        }
+
+        .no-course-selected {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #BEBEBE;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .no-course-selected i {
+            font-size: 54px;
+            color: #8B5CF6;
+            margin-bottom: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+        <div>
+            <div class="logo">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>LearnHub</span>
+            </div>
+
+            <ul>
+                <li>
+                    <a href="<%= user.role === 'student' ? '/dashboard/student' : (user.role === 'instructor' ? '/dashboard/instructor' : '/dashboard/admin') %>" style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:10px; width:100%;">
+                        <i class="fa-solid fa-house"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <% if (user.role === 'student') { %>
+                    <li>
+                        <a href="/student/my-courses" style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:10px; width:100%;">
+                            <i class="fa-solid fa-book-open"></i>
+                            My Courses
+                        </a>
+                    </li>
+                <% } else if (user.role === 'instructor') { %>
+                    <li>
+                        <a href="/dashboard/instructor/courses" style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:10px; width:100%;">
+                            <i class="fa-solid fa-book-open"></i>
+                            My Courses
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/dashboard/instructor/students" style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:10px; width:100%;">
+                            <i class="fa-solid fa-users"></i>
+                            Students
+                        </a>
+                    </li>
+                <% } %>
+                <li class="active">
+                    <i class="fa-regular fa-message"></i>
+                    Messages & Doubts
+                </li>
+            </ul>
+        </div>
+
+        <a href="/logout" class="logout">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+        </a>
+    </aside>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="main" style="padding: 20px 40px 0;">
+        <div class="topbar" style="margin-bottom: 10px;">
+            <div>
+                <h1>Messages & Doubts 💬</h1>
+                <p>Chat in real-time with instructors and fellow students to resolve doubts.</p>
+            </div>
+            <div class="profile">
+                <i class="fa-regular fa-bell"></i>
+                <img src="https://i.pravatar.cc/100?img=12">
+            </div>
+        </div>
+
+        <div class="chat-container">
+            <!-- Left: Courses Panel -->
+            <div class="courses-panel">
+                <div class="courses-panel-header">
+                    <h3><i class="fa-solid fa-comments" style="color: #8B5CF6;"></i> Course Discussions</h3>
+                    <p>Select a course room to join</p>
+                </div>
+                <div class="course-item-list">
+                    <% if (userCourses && userCourses.length > 0) { %>
+                        <% userCourses.forEach(c => { %>
+                            <a href="/messages/<%= c._id %>" class="course-chat-card <%= activeCourse && activeCourse._id.toString() === c._id.toString() ? 'active' : '' %>">
+                                <img src="<%= c.thumbnail %>" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500'">
+                                <div class="course-chat-info">
+                                    <h4><%= c.title %></h4>
+                                    <span><%= c.category %></span>
+                                </div>
+                            </a>
+                        <% }) %>
+                    <% } else { %>
+                        <p style="color: #BEBEBE; padding: 20px; font-size: 13px; text-align: center;">
+                            No course rooms available. <%= user.role === 'student' ? 'Enroll in a course to participate in doubt discussions!' : 'Create a course to start discussion rooms!' %>
+                        </p>
+                    <% } %>
+                </div>
+            </div>
+
+            <!-- Right: Chat Window -->
+            <% if (activeCourse) { %>
+                <div class="chat-main">
+                    <div class="chat-header">
+                        <div class="chat-header-info">
+                            <h2><%= activeCourse.title %></h2>
+                            <p>Instructor: <strong><%= activeCourse.instructorName || 'Instructor' %></strong> &nbsp;·&nbsp; Category: <strong><%= activeCourse.category %></strong></p>
+                        </div>
+                    </div>
+
+                    <div class="messages-history" id="messagesHistory">
+                        <% if (messages && messages.length > 0) { %>
+                            <% messages.forEach(msg => { %>
+                                <% const isSelf = msg.sender.toString() === user._id.toString(); %>
+                                <div class="msg-bubble <%= isSelf ? 'self' : 'other' %>">
+                                    <div class="msg-meta">
+                                        <span class="sender-name"><%= msg.senderName %></span>
+                                        <span class="role-badge <%= msg.senderRole %>"><%= msg.senderRole %></span>
+                                    </div>
+                                    <div class="msg-text"><%= msg.text %></div>
+                                    <div class="msg-time"><%= new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></div>
+                                </div>
+                            <% }) %>
+                        <% } %>
+                    </div>
+
+                    <form class="chat-input-area" id="chatForm">
+                        <input type="text" id="messageInput" placeholder="Type your question or message here..." autocomplete="off" required>
+                        <button type="submit" class="send-btn" title="Send Message">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            <% } else { %>
+                <div class="no-course-selected">
+                    <i class="fa-solid fa-comments"></i>
+                    <h2>No Active Course Selected</h2>
+                    <p>Select a course room from the left panel to join the doubt discussion.</p>
+                </div>
+            <% } %>
+        </div>
+    </main>
+
+</div>
+
+<% if (activeCourse) { %>
+    <!-- Real-time Socket.IO Client -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const courseId = "<%= activeCourse._id %>";
+        const currentUserId = "<%= user._id %>";
+        const currentUsername = "<%= user.username %>";
+        const currentUserRole = "<%= user.role %>";
+
+        const messagesHistory = document.getElementById('messagesHistory');
+        const chatForm = document.getElementById('chatForm');
+        const messageInput = document.getElementById('messageInput');
+
+        // Scroll to bottom of chat
+        function scrollToBottom() {
+            if (messagesHistory) {
+                messagesHistory.scrollTop = messagesHistory.scrollHeight;
+            }
+        }
+        scrollToBottom();
+
+        // Join course real-time room
+        socket.emit('joinCourseRoom', courseId);
+
+        // Send message event
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = messageInput.value.trim();
+            if (!text) return;
+
+            socket.emit('sendMessage', {
+                courseId: courseId,
+                senderId: currentUserId,
+                senderName: currentUsername,
+                senderRole: currentUserRole,
+                text: text
+            });
+
+            messageInput.value = '';
+        });
+
+        // Listen for incoming messages
+        socket.on('receiveMessage', (msg) => {
+            const isSelf = msg.senderId === currentUserId;
+
+            const timeStr = msg.createdAt ? new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            const msgElement = document.createElement('div');
+            msgElement.className = `msg-bubble ${isSelf ? 'self' : 'other'}`;
+            msgElement.innerHTML = `
+                <div class="msg-meta">
+                    <span class="sender-name">${escapeHtml(msg.senderName)}</span>
+                    <span class="role-badge ${msg.senderRole}">${escapeHtml(msg.senderRole)}</span>
+                </div>
+                <div class="msg-text">${escapeHtml(msg.text)}</div>
+                <div class="msg-time">${timeStr}</div>
+            `;
+
+            messagesHistory.appendChild(msgElement);
+            scrollToBottom();
+        });
+
+        function escapeHtml(str) {
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+    </script>
+<% } %>
+
+</body>
+</html>
