@@ -1,0 +1,173 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:linear-gradient(
+        135deg,
+        #052E16,
+        #14532D,
+        #166534
+    );
+
+    overflow:hidden;
+}
+
+body::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:280px;
+    height:280px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.08);
+
+    top:-80px;
+    left:-80px;
+}
+
+body::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:220px;
+    height:220px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.05);
+
+    bottom:-70px;
+    right:-70px;
+}
+
+.success-card{
+
+    width:560px;
+
+    background:rgba(17,24,39,.93);
+
+    backdrop-filter:blur(14px);
+
+    border-radius:25px;
+
+    padding:55px 45px;
+
+    text-align:center;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:0 25px 60px rgba(0,0,0,.45);
+
+    z-index:5;
+}
+
+.success-icon{
+
+    width:100px;
+    height:100px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    background:#22C55E;
+
+    color:white;
+
+    font-size:50px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    margin-bottom:25px;
+
+    box-shadow:0 0 30px rgba(34,197,94,.5);
+}
+
+h1{
+
+    color:white;
+
+    font-size:34px;
+
+    margin-bottom:18px;
+}
+
+p{
+
+    color:#D1D5DB;
+
+    font-size:16px;
+
+    line-height:1.8;
+
+    margin-bottom:40px;
+}
+
+.buttons{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:18px;
+}
+
+.buttons a{
+
+    text-decoration:none;
+
+    padding:14px 30px;
+
+    border-radius:12px;
+
+    font-weight:600;
+
+    transition:.3s;
+}
+
+.login-btn{
+
+    background:#22C55E;
+
+    color:white;
+}
+
+.login-btn:hover{
+
+    background:#16A34A;
+
+    transform:translateY(-3px);
+}
+
+.home-btn{
+
+    border:2px solid #22C55E;
+
+    color:white;
+}
+
+.home-btn:hover{
+
+    background:#22C55E;
+
+    transform:translateY(-3px);
+}

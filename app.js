@@ -21,10 +21,10 @@ app.get("/",(req,res)=>{
     res.render("index");
 })
 
-
 app.get("/create",(req,res)=>{
     res.render("createaccount");
 })
+
 
 app.post("/create",(req,res)=>{
     /*  req={
@@ -49,7 +49,8 @@ app.post("/create",(req,res)=>{
             let user=await userModel.findOne({email:req.body.email});
 
             if(user){
-                res.send("user already exists!!")
+                //res.send("user already exists!!")
+                res.render("user_already_exists");
             }
             else{
                 let user=await userModel.create({
@@ -59,7 +60,8 @@ app.post("/create",(req,res)=>{
                     age:req.body.age,
                     role:req.body.role
                 })
-                console.log("user created sucessfully");
+                //console.log("user created sucessfully");
+                res.render("creationsucessfull");
 
                 //create a cookie and send it to the browser
                 let token=jwt.sign({userid:user._id,email:user.email,role:user.role},"shhh");
@@ -80,6 +82,59 @@ app.post("/create",(req,res)=>{
     res.render("login",{role:role});
  })
 
+//PROTECTED ROUTES!!!
+
+app.get("/studentdashboard",isLoggedIn,async (req,res,next)=>{
+    /*req={
+        METHOD:"GET",
+        headers:{___},
+        userinfo:{
+            userid:----,
+            email:-----,
+            role:------
+        }
+    }*/
+    let user=await userModel.findOne({_id:req.userinfo.userid});
+    if(user.role!=="student"){
+        return res.send("Access denied!!");
+    }
+    
+})
+
+app.get("/instructor",isLoggedIn,async (req,res,next)=>{
+
+    /*req={
+        METHOD:"GET",
+        headers:{___},
+        userinfo:{
+            userid:----,
+            email:-----,
+            role:------
+        }
+    }*/
+    let user=await userModel.findOne({_id:req.userinfo.userid});
+    if(user.role!=="instructor"){
+        return res.send("Access denied!!");
+    }
+    
+})
+app.get("/instructor",isLoggedIn,async (req,res,next)=>{
+    
+    /*req={
+        METHOD:"GET",
+        headers:{___},
+        userinfo:{
+            userid:----,
+            email:-----,
+            role:------
+        }
+    }*/
+    let user=await userModel.findOne({_id:req.userinfo.userid});
+    if(user.role!=="instructor"){
+        return res.send("Access denied!!");
+    }
+    
+})
 
 app.post("/login/:role",async(req,res)=>{
     const expectedRole = req.params.role;
@@ -94,15 +149,15 @@ app.post("/login/:role",async(req,res)=>{
             email:"aksharaguru123@gmail.com",
             password:"Vallalar999"
         }
-        cookie:{
-            token:"sgjdhgarchdletchwrt#%25dgwinmxiafr37493#....."
-        }
+        
     }*/
+
     
     //find the userdoc which has email id as "aksharaguru123@gmail.com"
+
     let user=await userModel.findOne({email:req.body.email});
     if(!user){
-        return res.send("user does not exist!!");
+        return res.render("usernotfound");
     }
 
     if(user.role !== expectedRole){
@@ -122,14 +177,23 @@ app.post("/login/:role",async(req,res)=>{
                     res.render("studentdashboard",{user:user});
                 }
                 else if(user.role === "instructor"){
-                res.render("instructor",{user:user});
+                    res.render("instructor",{user:user});
                 }
+                else if(user.role==="admin"){
+                    res.render("admin",{user:user});
+                }
+                //create a token and send a cookie
+                let token=jwt.sign({userid:user._id,email:user.email,role:user.role},"shhh");
+                res.cookie("token",token);
+
             }
             else{
-                 res.send("you cannot login!!");
+                //res.send("you cannot login!!");
+                res.render("loginfailed");
             }
         })
     }
+
 })
 
 //admin login
@@ -167,7 +231,8 @@ app.get("/logout",(req,res)=>{
 
 function isLoggedIn(req,res,next){
     if(req.cookies.token===""){
-        res.send("your are logged out,Please Login");
+        //res.send("your are logged out,Please Login");
+        res.render("notloggedin");
     }
     else{
         let data=jwt.verify(req.cookies.token,"shhh");

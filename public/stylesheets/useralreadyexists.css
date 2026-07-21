@@ -1,0 +1,171 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:linear-gradient(
+        135deg,
+        #1F2937,
+        #111827,
+        #0F172A
+    );
+
+    overflow:hidden;
+}
+
+body::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:320px;
+    height:320px;
+
+    border-radius:50%;
+
+    background:rgba(245,158,11,.08);
+
+    top:-100px;
+    left:-100px;
+}
+
+body::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:240px;
+    height:240px;
+
+    border-radius:50%;
+
+    background:rgba(245,158,11,.05);
+
+    bottom:-70px;
+    right:-70px;
+}
+
+.card{
+
+    width:560px;
+
+    background:rgba(17,24,39,.95);
+
+    border-radius:24px;
+
+    padding:55px 45px;
+
+    text-align:center;
+
+    backdrop-filter:blur(14px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:0 25px 60px rgba(0,0,0,.45);
+
+    z-index:5;
+}
+
+.icon{
+
+    width:100px;
+    height:100px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    background:#F59E0B;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:48px;
+
+    margin-bottom:28px;
+
+    box-shadow:0 0 30px rgba(245,158,11,.45);
+}
+
+h1{
+
+    color:white;
+
+    font-size:34px;
+
+    margin-bottom:18px;
+}
+
+p{
+
+    color:#D1D5DB;
+
+    font-size:16px;
+
+    line-height:1.8;
+
+    margin-bottom:40px;
+}
+
+.buttons{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:18px;
+}
+
+.buttons a{
+
+    text-decoration:none;
+
+    padding:14px 30px;
+
+    border-radius:12px;
+
+    font-weight:600;
+
+    transition:.3s;
+}
+
+.login-btn{
+
+    background:#F59E0B;
+
+    color:white;
+}
+
+.login-btn:hover{
+
+    background:#D97706;
+
+    transform:translateY(-3px);
+}
+
+.create-btn{
+
+    border:2px solid #F59E0B;
+
+    color:white;
+}
+
+.create-btn:hover{
+
+    background:#F59E0B;
+
+    transform:translateY(-3px);
+}
