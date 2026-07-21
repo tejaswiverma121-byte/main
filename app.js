@@ -17,7 +17,7 @@ app.use(cookieParser());
 
 //routes
 
-app.get("/firstpage",(req,res)=>{
+app.get("/",(req,res)=>{
     res.render("index");
 })
 
@@ -46,7 +46,8 @@ app.post("/create",(req,res)=>{
             let user=await userModel.findOne({email:req.body.email});
 
             if(user){
-                res.send("user already exists!!")
+                //res.send("user already exists!!")
+                res.render("user_already_exists");
             }
             else{
                 let user=await userModel.create({
@@ -56,7 +57,8 @@ app.post("/create",(req,res)=>{
                     age:req.body.age,
                     role:req.body.role
                 })
-                console.log("user created sucessfully");
+                //console.log("user created sucessfully");
+                res.render("creationsucessfull");
 
                 //create a cookie and send it to the browser
                 let token=jwt.sign({userid:user._id,email:user.email,role:user.role},"shhh");
