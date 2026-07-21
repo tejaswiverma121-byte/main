@@ -469,3 +469,76 @@ body{
     }
 
 }
+
+/* ================= CUSTOM SIDEBAR LINKS & COURSE CARDS ================= */
+
+.sidebar ul a{
+    text-decoration:none;
+    color:inherit;
+    display:block;
+}
+
+.course-card-details {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 15px;
+}
+
+.course-card-details .price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #10B981;
+}
+
+.course-card-details .instructor-name {
+    font-size: 13px;
+    color: #BEBEBE;
+}
+
+.enroll-btn {
+    width: 100%;
+    margin-top: 20px;
+    background: linear-gradient(135deg, #6D28D9, #9333EA);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 4px 15px rgba(109, 40, 217, 0.2);
+    text-align: center;
+    display: block;
+    text-decoration: none;
+}
+
+.enroll-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(109, 40, 217, 0.4);
+}
+
+.enroll-btn.enrolled {
+    background: rgba(255, 255, 255, 0.08);
+    color: #8B8B8B;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    cursor: default;
+    box-shadow: none;
+}
+
+.enroll-btn.enrolled:hover {
+    transform: none;
+}
+
+.no-courses-msg {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px 20px;
+    color: #BEBEBE;
+    background: #211C44;
+    border-radius: 20px;
+    font-size: 15px;
+}
