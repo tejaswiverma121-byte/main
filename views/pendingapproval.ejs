@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Approval | LearnHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        body {
+            min-height: 100vh;
+            background: #15132B;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: #211C44;
+            border-radius: 24px;
+            padding: 60px 50px;
+            max-width: 520px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+            animation: fadeUp 0.5s ease;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon {
+            font-size: 70px;
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: white;
+            margin-bottom: 18px;
+        }
+
+        p {
+            color: #BEBEBE;
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 36px;
+        }
+
+        p strong {
+            color: #A78BFA;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(251, 191, 36, 0.15);
+            color: #FBBF24;
+            border: 1px solid rgba(251, 191, 36, 0.4);
+            border-radius: 999px;
+            padding: 8px 22px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 36px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .home-btn {
+            text-decoration: none;
+            background: linear-gradient(135deg, #4F46E5, #9333EA);
+            color: white;
+            padding: 14px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .home-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(139, 92, 246, 0.45);
+        }
+
+        .retry-btn {
+            text-decoration: none;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #cfcfcf;
+            padding: 14px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .retry-btn:hover {
+            background: rgba(255,255,255,0.12);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+
+        <span class="icon">⏳</span>
+
+        <h1>Approval Pending</h1>
+
+        <div class="badge">🔒 Awaiting Admin Review</div>
+
+        <p>
+            Your instructor account has been successfully created.<br>
+            An <strong>admin</strong> needs to review and approve your profile before you can access your dashboard.
+            <br><br>
+            This usually takes a short while. Please try logging in again later.
+        </p>
+
+        <div class="buttons">
+            <a href="/login/instructor" class="retry-btn">Try Login Again</a>
+            <a href="/" class="home-btn">Back to Home</a>
+        </div>
+
+    </div>
+
+</body>
+</html>

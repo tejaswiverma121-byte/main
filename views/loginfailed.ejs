@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Failed | LearnHub</title>
+    <title><%= typeof title !== 'undefined' ? title : 'Login Failed' %> | LearnHub</title>
 
     <link rel="stylesheet" href="/stylesheets/loginfailed.css">
 
@@ -17,15 +17,14 @@
             ✖
         </div>
 
-        <h1>Login Failed</h1>
+        <h1><%= typeof title !== 'undefined' ? title : 'Login Failed' %></h1>
 
         <p>
-            We couldn't verify your credentials.
-            Please check your email and password, then try again.
+            <%= typeof message !== 'undefined' ? message : "We couldn't verify your credentials. Please check your email and password, then try again." %>
         </p>
 
         <div class="btn-group">
-            <a href="/login" class="retry-btn">Try Again</a>
+            <a href="<%= typeof retryUrl !== 'undefined' ? retryUrl : '/' %>" class="retry-btn">Try Again</a>
             <a href="/" class="home-btn">Home</a>
         </div>
 

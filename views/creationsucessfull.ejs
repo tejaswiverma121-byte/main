@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Created | LearnHub</title>
-
     <link rel="stylesheet" href="/stylesheets/accountcreated.css">
-
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -19,20 +17,26 @@
 
         <h1>Account Created Successfully!</h1>
 
-        <p>
-            Welcome to <strong>LearnHub</strong>! Your account has been created successfully.
-            You can now log in and start exploring courses.
-        </p>
-
-        <div class="buttons">
-            <a href="/login" class="login-btn">
-                Login Now
-            </a>
-
-            <a href="/" class="home-btn">
-                Back to Home
-            </a>
-        </div>
+        <% if (role === "instructor") { %>
+            <p>
+                Welcome to <strong>LearnHub</strong>! Your instructor account has been created.
+                <br><br>
+                ⏳ Your account is currently <strong>pending admin approval</strong>.
+                You'll be able to log in once an admin reviews and approves your profile.
+            </p>
+            <div class="buttons">
+                <a href="/" class="home-btn">Back to Home</a>
+            </div>
+        <% } else { %>
+            <p>
+                Welcome to <strong>LearnHub</strong>! Your account has been created successfully.
+                You can now log in and start exploring courses.
+            </p>
+            <div class="buttons">
+                <a href="/login/student" class="login-btn">Login Now</a>
+                <a href="/" class="home-btn">Back to Home</a>
+            </div>
+        <% } %>
 
     </div>
 

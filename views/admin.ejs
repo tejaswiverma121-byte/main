@@ -157,9 +157,9 @@ src="https://i.pravatar.cc/100?img=12">
 
 <h4>Total Users</h4>
 
-<h2>5,320</h2>
+<h2><%= typeof totalUsers !== 'undefined' ? totalUsers : '—' %></h2>
 
-<span class="green">+12% this month</span>
+<span class="green">Platform Members</span>
 
 </div>
 
@@ -177,9 +177,9 @@ src="https://i.pravatar.cc/100?img=12">
 
 <h4>Instructors</h4>
 
-<h2>320</h2>
+<h2><%= typeof totalInstructors !== 'undefined' ? totalInstructors : '—' %></h2>
 
-<span class="green">+8%</span>
+<span class="green">Approved + Pending</span>
 
 </div>
 
@@ -195,17 +195,17 @@ src="https://i.pravatar.cc/100?img=12">
 
 <div>
 
-<h4>Courses</h4>
+<h4>Students</h4>
 
-<h2>540</h2>
+<h2><%= typeof totalStudents !== 'undefined' ? totalStudents : '—' %></h2>
 
-<span class="green">+15%</span>
+<span class="green">Registered Learners</span>
 
 </div>
 
 <div class="icon green-bg">
 
-<i class="fa-solid fa-book-open"></i>
+<i class="fa-solid fa-graduation-cap"></i>
 
 </div>
 
@@ -238,12 +238,15 @@ src="https://i.pravatar.cc/100?img=12">
                         <img src="https://i.pravatar.cc/100?img=<%= Math.floor(Math.random() * 70) %>" style="width: 50px; height: 50px; border-radius: 50%;">
                         <div>
                             <h4 style="margin: 0; color: white;"><%= instructor.username %></h4>
-                            <p style="margin: 4px 0 0; color: #BEBEBE; font-size: 14px;"><%= instructor.email %> (Age: <%= instructor.age %>)</p>
+                            <p style="margin: 4px 0 0; color: #BEBEBE; font-size: 14px;"><%= instructor.email %> &nbsp;·&nbsp; Age: <%= instructor.age %></p>
                         </div>
                     </div>
-                    <div>
+                    <div style="display: flex; gap: 10px;">
                         <button onclick="approveInstructor('<%= instructor._id %>')" style="background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);">
-                            Approve
+                            ✓ Approve
+                        </button>
+                        <button onclick="rejectInstructor('<%= instructor._id %>')" style="background: linear-gradient(135deg, #EF4444, #DC2626); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);">
+                            ✕ Reject
                         </button>
                     </div>
                 </div>
@@ -415,35 +418,53 @@ Platform Analytics
 </div>
 
 <script>
+function removeRow(id) {
+    const row = document.getElementById(`row-${id}`);
+    if (row) {
+        row.style.transition = 'all 0.5s ease';
+        row.style.opacity = '0';
+        row.style.transform = 'translateX(50px)';
+        setTimeout(() => {
+            row.remove();
+            const container = document.querySelector('.recent-users div[style*="flex-direction: column"]');
+            if (container && container.querySelectorAll('.user-row').length === 0) {
+                container.innerHTML = '<p style="color: #BEBEBE;">No pending instructor approvals at the moment.</p>';
+            }
+        }, 500);
+    }
+}
+
 async function approveInstructor(id) {
     try {
         const response = await fetch(`/admin/approve/${id}`, {
             method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
         });
         if (response.ok) {
-            const row = document.getElementById(`row-${id}`);
-            if (row) {
-                row.style.transition = 'all 0.5s ease';
-                row.style.opacity = '0';
-                row.style.transform = 'translateX(50px)';
-                setTimeout(() => {
-                    row.remove();
-                    // If no more rows, show the empty state message
-                    const container = document.querySelector('.recent-users div[style*="flex-direction: column"]');
-                    if (container && container.querySelectorAll('.user-row').length === 0) {
-                        container.innerHTML = '<p style="color: #BEBEBE;">No pending instructor approvals at the moment.</p>';
-                    }
-                }, 500);
-            }
+            removeRow(id);
         } else {
-            alert('Failed to approve instructor');
+            alert('Failed to approve instructor. Please try again.');
         }
     } catch (err) {
         console.error('Error approving instructor:', err);
+        alert('An error occurred. Please try again.');
+    }
+}
+
+async function rejectInstructor(id) {
+    if (!confirm('Are you sure you want to reject and delete this instructor account?')) return;
+    try {
+        const response = await fetch(`/admin/reject/${id}`, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+        });
+        if (response.ok) {
+            removeRow(id);
+        } else {
+            alert('Failed to reject instructor. Please try again.');
+        }
+    } catch (err) {
+        console.error('Error rejecting instructor:', err);
         alert('An error occurred. Please try again.');
     }
 }

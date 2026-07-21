@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Already Logged In | LearnHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        body {
+            min-height: 100vh;
+            background: #15132B;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: #211C44;
+            border-radius: 24px;
+            padding: 60px 50px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+            animation: fadeUp 0.5s ease;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon { font-size: 64px; margin-bottom: 20px; display: block; }
+
+        h1 {
+            font-size: 26px;
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.2);
+            color: #A78BFA;
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            border-radius: 999px;
+            padding: 6px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: capitalize;
+        }
+
+        p {
+            color: #BEBEBE;
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 36px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .dashboard-btn {
+            text-decoration: none;
+            background: linear-gradient(135deg, #4F46E5, #9333EA);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .dashboard-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(139, 92, 246, 0.45);
+        }
+
+        .logout-btn {
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #cfcfcf;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.12);
+            border-color: rgba(239, 68, 68, 0.4);
+            color: #FCA5A5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+
+        <span class="icon">👋</span>
+
+        <h1>You're Already Logged In!</h1>
+
+        <div class="badge"><%= role %></div>
+
+        <p>
+            You already have an active session as a <strong style="color: #A78BFA; text-transform: capitalize;"><%= role %></strong>.
+            <br>Go to your dashboard, or logout if you want to switch accounts.
+        </p>
+
+        <div class="buttons">
+            <a href="<%= dashboardUrl %>" class="dashboard-btn">Go to My Dashboard →</a>
+            <a href="/logout" class="logout-btn">Logout &amp; Switch Account</a>
+        </div>
+
+    </div>
+
+    <script>
+        // Replace current history entry so there's nothing to go "back" to
+        history.replaceState(null, '', location.href);
+
+        // If user presses back button, push state again to trap them here
+        window.addEventListener('popstate', function () {
+            history.pushState(null, '', location.href);
+        });
+    </script>
+
+</body>
+</html>
