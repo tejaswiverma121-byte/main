@@ -57,4 +57,29 @@ router.get('/student/my-courses', isLoggedIn, async (req, res) => {
     }
 });
 
+// Watch a course (view lectures)
+router.get('/student/course/:courseId', isLoggedIn, async (req, res) => {
+    if (req.userinfo.role !== 'student') return res.redirect('/');
+    try {
+        const user = await userModel.findById(req.userinfo.userid);
+        const course = await courseModel.findById(req.params.courseId);
+
+        if (!course) return res.redirect('/student/my-courses');
+
+        // Check if user owns the course (via purchasedCourses or enrollment)
+        const hasPurchased = user.purchasedCourses && user.purchasedCourses.map(id => id.toString()).includes(req.params.courseId);
+        if (!hasPurchased) {
+            return res.redirect('/student/my-courses');
+        }
+
+        const lectureModel = require('../models/lectures');
+        const lectures = await lectureModel.find({ course: req.params.courseId }).sort({ order: 1 });
+
+        res.render('student-course-watch', { user, course, lectures });
+    } catch (err) {
+        console.error('Error loading course watch page:', err);
+        res.redirect('/student/my-courses');
+    }
+});
+
 module.exports = router;

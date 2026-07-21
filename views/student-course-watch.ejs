@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= course.title %> | LearnHub</title>
+    <link rel="stylesheet" href="/stylesheets/studentdashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        .watch-layout {
+            display: flex;
+            gap: 26px;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+
+        /* Video Player Column */
+        .video-column {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .video-wrapper {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .video-wrapper video,
+        .video-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        .video-info {
+            margin-top: 20px;
+        }
+
+        .video-info h2 {
+            color: white;
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .video-info p {
+            color: #BEBEBE;
+            font-size: 14px;
+        }
+
+        .video-meta {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .video-meta span {
+            color: #9f9f9f;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .video-meta span i {
+            color: #8B5CF6;
+        }
+
+        /* Lecture List Column */
+        .lectures-column {
+            width: 340px;
+            flex-shrink: 0;
+            background: #211C44;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.07);
+            overflow: hidden;
+        }
+
+        .lectures-header {
+            padding: 20px;
+            background: #1B1735;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .lectures-header h3 {
+            margin: 0;
+            color: white;
+            font-size: 16px;
+        }
+
+        .lectures-header p {
+            margin: 4px 0 0;
+            color: #9f9f9f;
+            font-size: 12px;
+        }
+
+        .lecture-list {
+            overflow-y: auto;
+            max-height: 480px;
+        }
+
+        .lecture-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            text-decoration: none;
+        }
+
+        .lecture-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .lecture-item.active {
+            background: linear-gradient(135deg, rgba(79,70,229,0.2), rgba(147,51,234,0.2));
+            border-left: 3px solid #8B5CF6;
+        }
+
+        .lecture-num {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(139,92,246,0.15);
+            color: #A78BFA;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .lecture-item.active .lecture-num {
+            background: #8B5CF6;
+            color: white;
+        }
+
+        .lecture-item-info h4 {
+            margin: 0;
+            font-size: 14px;
+            color: white;
+            line-height: 1.4;
+        }
+
+        .lecture-item-info span {
+            font-size: 11px;
+            color: #9f9f9f;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .no-lectures-msg {
+            padding: 40px 20px;
+            text-align: center;
+            color: #BEBEBE;
+            font-size: 14px;
+        }
+
+        .no-lectures-msg i {
+            font-size: 36px;
+            color: #4F46E5;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #A78BFA;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: white;
+        }
+
+        .doubt-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(139,92,246,0.15);
+            color: #A78BFA;
+            border: 1px solid rgba(139,92,246,0.4);
+            padding: 9px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.25s;
+            margin-top: 16px;
+        }
+
+        .doubt-btn:hover {
+            background: rgba(139,92,246,0.3);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>LearnHub</span>
+        </div>
+
+        <ul>
+            <a href="/dashboard/student">
+                <li>
+                    <i class="fa-solid fa-house"></i>
+                    Dashboard
+                </li>
+            </a>
+
+            <a href="/student/my-courses">
+                <li class="active">
+                    <i class="fa-solid fa-book-open"></i>
+                    My Courses
+                </li>
+            </a>
+
+            <li>
+                <i class="fa-regular fa-heart"></i>
+                Wishlist
+            </li>
+
+            <li>
+                <i class="fa-solid fa-chart-line"></i>
+                Progress
+            </li>
+
+            <a href="/messages" style="text-decoration:none; color:inherit;">
+                <li>
+                    <i class="fa-regular fa-message"></i>
+                    Messages
+                </li>
+            </a>
+
+            <li>
+                <i class="fa-regular fa-user"></i>
+                Profile
+            </li>
+        </ul>
+
+        <a href="/logout" class="logout"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+    </aside>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="main">
+        <div class="topbar">
+            <div>
+                <h1><%= course.title %></h1>
+                <p>By <strong><%= course.instructorName %></strong> &nbsp;·&nbsp; <%= course.category %></p>
+            </div>
+            <div class="profile">
+                <i class="fa-regular fa-bell"></i>
+                <img src="https://i.pravatar.cc/100?img=32" alt="profile">
+            </div>
+        </div>
+
+        <a href="/student/my-courses" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to My Courses
+        </a>
+
+        <% if (locals.lectures && lectures.length > 0) { %>
+
+            <div class="watch-layout">
+                <!-- Video Player -->
+                <div class="video-column">
+                    <div class="video-wrapper" id="videoWrapper">
+                        <%
+                            const firstLecture = lectures[0];
+                            if (firstLecture.videoType === 'youtube') {
+                                let ytId = firstLecture.videoUrl;
+                                if (ytId.includes('watch?v=')) {
+                                    ytId = ytId.split('watch?v=')[1].split('&')[0];
+                                } else if (ytId.includes('youtu.be/')) {
+                                    ytId = ytId.split('youtu.be/')[1].split('?')[0];
+                                }
+                        %>
+                            <iframe id="videoPlayer" src="https://www.youtube.com/embed/<%= ytId %>?autoplay=0" allowfullscreen></iframe>
+                        <% } else { %>
+                            <video id="videoPlayer" controls src="<%= firstLecture.videoUrl %>"></video>
+                        <% } %>
+                    </div>
+
+                    <div class="video-info">
+                        <h2 id="currentTitle"><%= firstLecture.title %></h2>
+                        <div class="video-meta">
+                            <span><i class="fa-solid fa-film"></i> Lecture 1 of <%= lectures.length %></span>
+                            <span><i class="fa-solid fa-tag"></i> <%= course.category %></span>
+                        </div>
+
+                        <a href="/messages/<%= course._id %>" class="doubt-btn">
+                            <i class="fa-regular fa-message"></i>
+                            Ask a Doubt
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Lecture List -->
+                <div class="lectures-column">
+                    <div class="lectures-header">
+                        <h3>Course Content</h3>
+                        <p><%= lectures.length %> lecture<%= lectures.length !== 1 ? 's' : '' %> in total</p>
+                    </div>
+                    <div class="lecture-list">
+                        <% lectures.forEach((lecture, index) => { %>
+                            <div class="lecture-item <%= index === 0 ? 'active' : '' %>"
+                                 onclick="switchLecture(this, '<%= lecture.videoType %>', '<%= lecture.videoUrl.replace(/'/g, "\\'") %>', '<%= lecture.title.replace(/'/g, "\\'") %>', <%= index + 1 %>)"
+                                 data-index="<%= index %>">
+                                <div class="lecture-num"><%= index + 1 %></div>
+                                <div class="lecture-item-info">
+                                    <h4><%= lecture.title %></h4>
+                                    <span><%= lecture.videoType === 'youtube' ? 'YouTube' : 'Video' %></span>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+
+        <% } else { %>
+            <div style="text-align: center; padding: 60px 20px; color: #BEBEBE;">
+                <i class="fa-solid fa-video" style="font-size: 50px; color: #8B5CF6; display: block; margin-bottom: 18px;"></i>
+                <h2 style="color: white; margin-bottom: 10px;">No Lectures Yet</h2>
+                <p>The instructor hasn't added any lectures to this course yet. Check back later!</p>
+                <a href="/messages/<%= course._id %>" class="doubt-btn" style="margin-top: 24px; display: inline-flex;">
+                    <i class="fa-regular fa-message"></i>
+                    Ask Instructor
+                </a>
+            </div>
+        <% } %>
+
+    </main>
+</div>
+
+<script>
+    const lecturesData = <%- JSON.stringify(lectures) %>;
+
+    function switchLecture(el, videoType, videoUrl, title, num) {
+        // Update active state in list
+        document.querySelectorAll('.lecture-item').forEach(item => item.classList.remove('active'));
+        el.classList.add('active');
+
+        // Update title
+        document.getElementById('currentTitle').textContent = title;
+
+        // Update video
+        const wrapper = document.getElementById('videoWrapper');
+        if (videoType === 'youtube') {
+            let ytId = videoUrl;
+            if (ytId.includes('watch?v=')) {
+                ytId = ytId.split('watch?v=')[1].split('&')[0];
+            } else if (ytId.includes('youtu.be/')) {
+                ytId = ytId.split('youtu.be/')[1].split('?')[0];
+            }
+            wrapper.innerHTML = `<iframe id="videoPlayer" src="https://www.youtube.com/embed/${ytId}?autoplay=1" allowfullscreen style="width:100%;height:100%;border:none;display:block;"></iframe>`;
+        } else {
+            wrapper.innerHTML = `<video id="videoPlayer" controls autoplay src="${videoUrl}" style="width:100%;height:100%;display:block;"></video>`;
+        }
+    }
+</script>
+
+</body>
+</html>
