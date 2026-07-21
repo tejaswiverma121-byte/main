@@ -158,7 +158,7 @@ app.post("/adminlogin",async(req,res)=>{
         if(!result){
             return res.send("Invalid admin credentials");
         }
-        let pendingInstructors = await userModel.find({role:"instructor", isApproved:false});
+        let pendingInstructors = await userModel.find({role:"instructor", isApproved: { $ne: true }});
         res.render("admin", { user:user, pendingInstructors:pendingInstructors });
     })
 })
