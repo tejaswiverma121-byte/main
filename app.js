@@ -150,7 +150,7 @@ app.post("/login/:role",async(req,res)=>{
 //admin login
 
 app.get("/admin/login",(req,res)=>{
-    res.render("adminlogin");
+    res.render("login",{role:"admin"});
 })
 app.post("/adminlogin",async(req,res)=>{
     let user = await userModel.findOne({email:req.body.email, role:"admin"});

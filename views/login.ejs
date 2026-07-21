@@ -43,7 +43,7 @@
                 Enter your credentials
             </p>
 
-            <form action="/login/<%= role %>" method="POST">
+            <form action="<%= role === 'admin' ? '/adminlogin' : '/login/' + role %>" method="POST">
 
                 <input type="email" name="email" placeholder="Email Address" required>
 
