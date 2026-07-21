@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students | LearnHub</title>
+    <link rel="stylesheet" href="/stylesheets/instructor.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+
+<div class="dashboard">
+
+<!-- ================= SIDEBAR ================= -->
+<aside class="sidebar">
+    <div>
+        <div class="logo">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>LearnHub</span>
+        </div>
+
+        <ul>
+            <li>
+                <a href="/dashboard/instructor" style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:10px; width:100%;">
+                    <i class="fa-solid fa-house"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li>
+                <a href="/dashboard/instructor" style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:10px; width:100%;">
+                    <i class="fa-solid fa-book-open"></i>
+                    My Courses
+                </a>
+            </li>
+            <li class="active">
+                <i class="fa-solid fa-users"></i>
+                Students
+            </li>
+            <li><i class="fa-regular fa-message"></i> Messages</li>
+            <li><i class="fa-regular fa-user"></i> Profile</li>
+        </ul>
+    </div>
+
+    <a href="/logout" class="logout">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Logout
+    </a>
+</aside>
+
+<!-- ================= MAIN ================= -->
+<main class="main">
+    <div class="topbar">
+        <div>
+            <h1>Your Students 🎓</h1>
+            <p>See who's enrolled across all your courses.</p>
+        </div>
+        <div class="profile">
+            <i class="fa-regular fa-bell"></i>
+            <img src="https://i.pravatar.cc/100?img=15">
+        </div>
+    </div>
+
+    <div class="table-header">
+        <h2>Enrolled Students</h2>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Email</th>
+                <th>Course</th>
+                <th>Enrolled On</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (locals.enrollments && enrollments.length > 0) { %>
+                <% enrollments.forEach(enrollment => { %>
+                    <tr>
+                        <td><strong><%= enrollment.student.username %></strong></td>
+                        <td><%= enrollment.student.email %></td>
+                        <td><%= enrollment.course.title %></td>
+                        <td><%= new Date(enrollment.enrolledAt).toLocaleDateString() %></td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <tr>
+                    <td colspan="4" style="text-align: center; color: #BEBEBE; padding: 30px;">
+                        No students enrolled yet.
+                    </td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+
+</main>
+
+</div>
+
+</body>
+</html>
