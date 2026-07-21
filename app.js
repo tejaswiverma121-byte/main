@@ -194,6 +194,24 @@ function isLoggedIn(req,res,next){
 
 }
 
-app.listen(4000,(req,res)=>{
+app.listen(4000, async () => {
     console.log("the server is waiting for requests in port 4000!!!");
+    
+    // Auto-create admin if it doesn't exist
+    try {
+        const admin = await userModel.findOne({ role: "admin" });
+        if (!admin) {
+            const hash = await bcrypt.hash("admin123", 10);
+            await userModel.create({
+                username: "SuperAdmin",
+                email: "admin@test.com",
+                password: hash,
+                role: "admin",
+                isApproved: true
+            });
+            console.log("Auto-seeded admin account (admin@test.com / admin123)");
+        }
+    } catch (err) {
+        console.error("Error auto-seeding admin:", err);
+    }
 })
