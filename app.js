@@ -73,6 +73,11 @@ app.post("/create",(req,res)=>{
     })
 
 })
+//general login redirect to home for role selection
+app.get("/login", (req, res) => {
+    res.redirect("/");
+});
+
 //student+instructor login
  app.get("/login/:role",(req,res)=>{
     const role=req.params.role;
