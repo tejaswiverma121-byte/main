@@ -542,3 +542,47 @@ body{
     border-radius: 20px;
     font-size: 15px;
 }
+
+/* ================= WISHLIST STYLING ================= */
+
+.course-card {
+    position: relative;
+}
+
+.wishlist-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 38px;
+    height: 38px;
+    background: rgba(21, 19, 43, 0.7);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    padding: 0;
+}
+
+.wishlist-btn:hover {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: #EF4444;
+    transform: scale(1.1);
+}
+
+.wishlist-btn i {
+    color: #BEBEBE;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.wishlist-btn.active i {
+    color: #EF4444;
+}
+
+.wishlist-btn:hover i {
+    color: #EF4444;
+}

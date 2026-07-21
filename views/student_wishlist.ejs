@@ -1,41 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>LearnHub Dashboard</title>
-
+    <title>LearnHub | Wishlist</title>
     <link rel="stylesheet" href="/stylesheets/studentdashboard.css">
-
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
-
 <body>
 
 <div class="dashboard">
 
     <!-- ================= SIDEBAR ================= -->
-
     <aside class="sidebar">
-
         <div class="logo">
-
             <i class="fa-solid fa-graduation-cap"></i>
-
             <span>LearnHub</span>
-
         </div>
 
         <ul>
             <a href="/dashboard/student">
-                <li class="active">
+                <li>
                     <i class="fa-solid fa-house"></i>
                     Dashboard
                 </li>
@@ -49,13 +35,12 @@
             </a>
 
             <a href="/student/wishlist">
-                <li>
-                    <i class="fa-regular fa-heart"></i>
+                <li class="active">
+                    <i class="fa-solid fa-heart"></i>
                     Wishlist
                 </li>
             </a>
 
-            
             <li>
                 <i class="fa-regular fa-message"></i>
                 Messages
@@ -68,89 +53,37 @@
         </ul>
 
         <a href="/logout" class="logout"> <i class="fa-solid fa-right-from-bracket"></i>Logout</a>
-
     </aside>
 
-
-
     <!-- ================= MAIN CONTENT ================= -->
-
     <main class="main">
-
         <!-- Top Bar -->
-
         <div class="topbar">
-
             <div>
-
-                <h1>
-
-                    Welcome Back,
-
-                    <%= user.username %> 👋
-
-                </h1>
-
-                <p>
-
-                    Keep learning and grow your skills every day.
-
-                </p>
-
+                <h1>My Wishlist <i class="fa-solid fa-heart" style="color: #EF4444; font-size: 30px; margin-left: 10px; vertical-align: middle;"></i></h1>
+                <p>Courses you've saved for later.</p>
             </div>
-
             <div class="profile">
-
                 <i class="fa-regular fa-bell"></i>
-
-                <img
-                src="https://i.pravatar.cc/100?img=32"
-                alt="profile">
-
+                <img src="https://i.pravatar.cc/100?img=32" alt="profile">
             </div>
-
-        </div>
-
-
-
-        <!-- Search -->
-
-        <div class="search">
-
-            <input
-
-            type="text"
-
-            placeholder="Search for courses...">
-
-            <i class="fa-solid fa-magnifying-glass"></i>
-
-        </div>
-
-
-
-        <!-- Available Courses -->
-
-        <div class="section-header">
-            <h2>Available Courses</h2>
         </div>
 
         <!-- Course Cards -->
         <div class="courses">
             <% if (locals.courses && courses.length > 0) { %>
                 <% courses.forEach(course => {
-                const isWishlisted = user.wishlist && user.wishlist.some(id => id.toString() === course._id.toString());
-                const isPurchased = user.purchasedCourses && user.purchasedCourses.some(id => id.toString() === course._id.toString());
-            %>
+                    const isPurchased = user.purchasedCourses && user.purchasedCourses.some(id => id.toString() === course._id.toString());
+                %>
                     <div class="course-card" style="display: flex; flex-direction: column; justify-content: space-between;">
-                        <!-- Wishlist Heart Button -->
+                        <!-- Wishlist Remove Button -->
                         <button
-                            class="wishlist-btn <%= isWishlisted ? 'active' : '' %>"
+                            class="wishlist-btn active"
                             data-course-id="<%= course._id %>"
                             onclick="toggleWishlist(this, '<%= course._id %>')"
-                            title="<%= isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist' %>"
+                            title="Remove from Wishlist"
                         >
-                            <i class="<%= isWishlisted ? 'fa-solid' : 'fa-regular' %> fa-heart"></i>
+                            <i class="fa-solid fa-heart"></i>
                         </button>
 
                         <div>
@@ -165,7 +98,7 @@
                             </div>
 
                             <% if (isPurchased) { %>
-                                <button class="enroll-btn enrolled" disabled>✓ Enrolled</button>
+                                <button class="enroll-btn enrolled" disabled>&#10003; Enrolled</button>
                             <% } else { %>
                                 <form action="/student/buy/<%= course._id %>" method="POST" style="margin: 0;">
                                     <button type="submit" class="enroll-btn">Enroll / Buy</button>
@@ -176,12 +109,12 @@
                 <% }) %>
             <% } else { %>
                 <div class="no-courses-msg">
-                    <i class="fa-solid fa-book" style="font-size: 40px; color: #8B5CF6; margin-bottom: 15px; display: block;"></i>
-                    No courses available right now. Please check back later!
+                    <i class="fa-regular fa-heart" style="font-size: 40px; color: #EF4444; margin-bottom: 15px; display: block;"></i>
+                    Your wishlist is empty!
+                    <a href="/dashboard/student" style="color: #8B5CF6; font-weight: 600; text-decoration: underline; display: block; margin-top: 15px;">Browse Available Courses</a>
                 </div>
             <% } %>
         </div>
-
     </main>
 
 </div>
@@ -194,18 +127,26 @@ async function toggleWishlist(btn, courseId) {
             headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
         });
         const data = await response.json();
-        if (data.success) {
-            const icon = btn.querySelector('i');
-            if (data.wishlisted) {
-                btn.classList.add('active');
-                icon.classList.remove('fa-regular');
-                icon.classList.add('fa-solid');
-                btn.title = 'Remove from Wishlist';
-            } else {
-                btn.classList.remove('active');
-                icon.classList.remove('fa-solid');
-                icon.classList.add('fa-regular');
-                btn.title = 'Add to Wishlist';
+        if (data.success && !data.wishlisted) {
+            // Removed from wishlist — fade the card out and remove it
+            const card = btn.closest('.course-card');
+            if (card) {
+                card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    card.remove();
+                    const remaining = document.querySelectorAll('.course-card');
+                    if (remaining.length === 0) {
+                        document.querySelector('.courses').innerHTML = `
+                            <div class="no-courses-msg">
+                                <i class="fa-regular fa-heart" style="font-size: 40px; color: #EF4444; margin-bottom: 15px; display: block;"></i>
+                                Your wishlist is empty!
+                                <a href="/dashboard/student" style="color: #8B5CF6; font-weight: 600; text-decoration: underline; display: block; margin-top: 15px;">Browse Available Courses</a>
+                            </div>
+                        `;
+                    }
+                }, 400);
             }
         }
     } catch (err) {
@@ -215,5 +156,4 @@ async function toggleWishlist(btn, courseId) {
 </script>
 
 </body>
-
 </html>
