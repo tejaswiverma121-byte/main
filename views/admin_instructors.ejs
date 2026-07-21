@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnHub Admin | Instructors</title>
+    <link rel="stylesheet" href="/stylesheets/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+
+<div class="dashboard">
+
+<!-- ================= SIDEBAR ================= -->
+<aside class="sidebar">
+    <div>
+        <div class="logo">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>LearnHub</span>
+        </div>
+
+        <ul>
+            <a href="/dashboard/admin">
+                <li class="<%= (typeof activePage !== 'undefined' && activePage === 'dashboard') ? 'active' : '' %>">
+                    <i class="fa-solid fa-house"></i>
+                    Dashboard
+                </li>
+            </a>
+            <a href="/admin/students">
+                <li class="<%= (typeof activePage !== 'undefined' && activePage === 'students') ? 'active' : '' %>">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    Students
+                </li>
+            </a>
+            <a href="/admin/instructors">
+                <li class="<%= (typeof activePage !== 'undefined' && activePage === 'instructors') ? 'active' : '' %>">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    Instructors
+                </li>
+            </a>
+            <li><i class="fa-solid fa-book"></i> Courses</li>
+            <li><i class="fa-solid fa-chart-column"></i> Reports</li>
+            <li><i class="fa-solid fa-layer-group"></i> Categories</li>
+            <li><i class="fa-solid fa-gear"></i> Settings</li>
+        </ul>
+    </div>
+
+    <a href="/logout" class="logout">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Logout
+    </a>
+</aside>
+
+<!-- ================= MAIN ================= -->
+<main class="main">
+    <div class="topbar">
+        <div>
+            <h1>Instructor Management</h1>
+            <p>Review instructor applications and manage verified platform educators</p>
+        </div>
+        <div class="profile">
+            <i class="fa-regular fa-bell"></i>
+            <img src="https://i.pravatar.cc/100?img=12">
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="stat-card">
+            <div>
+                <h4>Total Instructors</h4>
+                <h2><%= totalInstructors %></h2>
+                <span class="green">All Registered</span>
+            </div>
+            <div class="icon blue">
+                <i class="fa-solid fa-chalkboard-user"></i>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div>
+                <h4>Approved</h4>
+                <h2><%= approvedCount %></h2>
+                <span class="green">Active Educators</span>
+            </div>
+            <div class="icon green-bg">
+                <i class="fa-solid fa-check-double"></i>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div>
+                <h4>Pending Approvals</h4>
+                <h2 id="pendingCountHeader"><%= pendingInstructors.length %></h2>
+                <span class="green" style="color: #FBBF24;">Requires Review</span>
+            </div>
+            <div class="icon yellow">
+                <i class="fa-solid fa-user-clock"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Instructor Approvals Card -->
+    <% if (pendingInstructors && pendingInstructors.length > 0) { %>
+    <div class="recent-users" style="margin-bottom: 30px; width: 100%; border: 1px solid rgba(245, 158, 11, 0.3);">
+        <h2 style="color: #FBBF24;"><i class="fa-solid fa-triangle-exclamation"></i> Pending Instructor Approvals</h2>
+        <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;" id="pendingListContainer">
+            <% pendingInstructors.forEach(instructor => { %>
+                <div class="user-row" id="row-<%= instructor._id %>" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,.08); padding-bottom: 15px;">
+                    <div style="display: flex; align-items: center; gap: 18px;">
+                        <img src="https://i.pravatar.cc/100?img=<%= (instructor._id.toString().charCodeAt(instructor._id.toString().length - 1) % 70) %>" style="width: 50px; height: 50px; border-radius: 50%;">
+                        <div>
+                            <h4 style="margin: 0; color: white;"><%= instructor.username %></h4>
+                            <p style="margin: 4px 0 0; color: #BEBEBE; font-size: 14px;"><%= instructor.email %> &nbsp;·&nbsp; Age: <%= instructor.age || '—' %></p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="approveInstructor('<%= instructor._id %>')" style="background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);">
+                            ✓ Approve
+                        </button>
+                        <button onclick="rejectInstructor('<%= instructor._id %>')" style="background: linear-gradient(135deg, #EF4444, #DC2626); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);">
+                            ✕ Reject
+                        </button>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+    <% } %>
+
+    <!-- All Instructors Table -->
+    <div class="data-table-container">
+        <div class="data-table-header">
+            <h2>All Instructors (<%= totalInstructors %>)</h2>
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="instructorSearch" placeholder="Search by name or email..." onkeyup="filterInstructors()">
+            </div>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Instructor Details</th>
+                    <th>Email Address</th>
+                    <th>Age</th>
+                    <th>Role</th>
+                    <th>Approval Status</th>
+                </tr>
+            </thead>
+            <tbody id="instructorsTableBody">
+                <% if (instructors && instructors.length > 0) { %>
+                    <% instructors.forEach(instructor => { %>
+                        <tr class="instructor-row">
+                            <td>
+                                <div class="user-info-cell">
+                                    <img src="https://i.pravatar.cc/100?img=<%= (instructor._id.toString().charCodeAt(instructor._id.toString().length - 1) % 70) %>" alt="avatar">
+                                    <div>
+                                        <h4><%= instructor.username %></h4>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="color: #BEBEBE;"><%= instructor.email %></td>
+                            <td><%= instructor.age || '—' %></td>
+                            <td><span class="badge badge-instructor">Instructor</span></td>
+                            <td>
+                                <% if (instructor.isApproved) { %>
+                                    <span class="badge badge-approved" id="status-badge-<%= instructor._id %>">Approved</span>
+                                <% } else { %>
+                                    <span class="badge badge-pending" id="status-badge-<%= instructor._id %>">Pending Approval</span>
+                                <% } %>
+                            </td>
+                        </tr>
+                    <% }) %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="5" style="text-align: center; color: #BEBEBE; padding: 30px;">
+                            No instructors found in the database.
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+</div>
+
+<script>
+function filterInstructors() {
+    const query = document.getElementById('instructorSearch').value.toLowerCase();
+    const rows = document.querySelectorAll('.instructor-row');
+    rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(query) ? '' : 'none';
+    });
+}
+
+function removePendingRow(id) {
+    const row = document.getElementById(`row-${id}`);
+    if (row) {
+        row.style.transition = 'all 0.5s ease';
+        row.style.opacity = '0';
+        row.style.transform = 'translateX(50px)';
+        setTimeout(() => {
+            row.remove();
+            const badge = document.getElementById(`status-badge-${id}`);
+            if (badge) {
+                badge.className = 'badge badge-approved';
+                badge.textContent = 'Approved';
+            }
+        }, 500);
+    }
+}
+
+async function approveInstructor(id) {
+    try {
+        const response = await fetch(`/admin/approve/${id}`, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+        });
+        if (response.ok) {
+            removePendingRow(id);
+        } else {
+            alert('Failed to approve instructor. Please try again.');
+        }
+    } catch (err) {
+        console.error('Error approving instructor:', err);
+        alert('An error occurred. Please try again.');
+    }
+}
+
+async function rejectInstructor(id) {
+    if (!confirm('Are you sure you want to reject and delete this instructor account?')) return;
+    try {
+        const response = await fetch(`/admin/reject/${id}`, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+        });
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            alert('Failed to reject instructor. Please try again.');
+        }
+    } catch (err) {
+        console.error('Error rejecting instructor:', err);
+        alert('An error occurred. Please try again.');
+    }
+}
+</script>
+
+</body>
+</html>

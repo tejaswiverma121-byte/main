@@ -46,6 +46,12 @@ body{
     list-style:none;
 }
 
+.sidebar ul a{
+    text-decoration:none;
+    color:inherit;
+    display:block;
+}
+
 .sidebar li{
     display:flex;
     align-items:center;
@@ -386,4 +392,133 @@ body{
         height:250px;
     }
 
+}
+
+/* ================= USER DATA TABLE & BADGES ================= */
+
+.data-table-container{
+    background:#211C44;
+    border-radius:18px;
+    padding:30px;
+    margin-top:20px;
+}
+
+.data-table-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+.data-table-header h2{
+    font-size:24px;
+    font-weight:600;
+}
+
+.search-box{
+    display:flex;
+    align-items:center;
+    background:#15132B;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:12px;
+    padding:10px 18px;
+    gap:10px;
+    width:300px;
+}
+
+.search-box i{
+    color:#8B5CF6;
+}
+
+.search-box input{
+    background:none;
+    border:none;
+    outline:none;
+    color:white;
+    width:100%;
+    font-size:14px;
+}
+
+.data-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+}
+
+.data-table th{
+    text-align:left;
+    padding:14px 18px;
+    color:#9f9f9f;
+    font-weight:500;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    font-size:14px;
+}
+
+.data-table td{
+    padding:16px 18px;
+    border-bottom:1px solid rgba(255,255,255,.05);
+    vertical-align:middle;
+}
+
+.data-table tr:hover td{
+    background:rgba(255,255,255,.02);
+}
+
+.user-info-cell{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.user-info-cell img{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.user-info-cell h4{
+    margin:0;
+    font-size:15px;
+    font-weight:600;
+}
+
+.user-info-cell p{
+    margin:2px 0 0;
+    color:#BEBEBE;
+    font-size:13px;
+}
+
+.badge{
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+    display:inline-block;
+}
+
+.badge-student{
+    background:rgba(22,163,74,.2);
+    color:#4ADE80;
+    border:1px solid rgba(22,163,74,.4);
+}
+
+.badge-instructor{
+    background:rgba(59,130,246,.2);
+    color:#60A5FA;
+    border:1px solid rgba(59,130,246,.4);
+}
+
+.badge-approved{
+    background:rgba(16,185,129,.2);
+    color:#34D399;
+    border:1px solid rgba(16,185,129,.4);
+}
+
+.badge-pending{
+    background:rgba(245,158,11,.2);
+    color:#FBBF24;
+    border:1px solid rgba(245,158,11,.4);
 }

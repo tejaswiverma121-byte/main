@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnHub Admin | Students</title>
+    <link rel="stylesheet" href="/stylesheets/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+
+<div class="dashboard">
+
+<!-- ================= SIDEBAR ================= -->
+<aside class="sidebar">
+    <div>
+        <div class="logo">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>LearnHub</span>
+        </div>
+
+        <ul>
+            <a href="/dashboard/admin">
+                <li class="<%= (typeof activePage !== 'undefined' && activePage === 'dashboard') ? 'active' : '' %>">
+                    <i class="fa-solid fa-house"></i>
+                    Dashboard
+                </li>
+            </a>
+            <a href="/admin/students">
+                <li class="<%= (typeof activePage !== 'undefined' && activePage === 'students') ? 'active' : '' %>">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    Students
+                </li>
+            </a>
+            <a href="/admin/instructors">
+                <li class="<%= (typeof activePage !== 'undefined' && activePage === 'instructors') ? 'active' : '' %>">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    Instructors
+                </li>
+            </a>
+            <li><i class="fa-solid fa-book"></i> Courses</li>
+            <li><i class="fa-solid fa-chart-column"></i> Reports</li>
+            <li><i class="fa-solid fa-layer-group"></i> Categories</li>
+            <li><i class="fa-solid fa-gear"></i> Settings</li>
+        </ul>
+    </div>
+
+    <a href="/logout" class="logout">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Logout
+    </a>
+</aside>
+
+<!-- ================= MAIN ================= -->
+<main class="main">
+    <div class="topbar">
+        <div>
+            <h1>Student Management</h1>
+            <p>View and manage all registered learners on LearnHub</p>
+        </div>
+        <div class="profile">
+            <i class="fa-regular fa-bell"></i>
+            <img src="https://i.pravatar.cc/100?img=12">
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats" style="grid-template-columns: repeat(2, 1fr); max-width: 600px;">
+        <div class="stat-card">
+            <div>
+                <h4>Total Students</h4>
+                <h2><%= totalStudents %></h2>
+                <span class="green">Active Learners</span>
+            </div>
+            <div class="icon green-bg">
+                <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Table Container -->
+    <div class="data-table-container">
+        <div class="data-table-header">
+            <h2>Registered Students (<%= totalStudents %>)</h2>
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="studentSearch" placeholder="Search by name or email..." onkeyup="filterStudents()">
+            </div>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Student Details</th>
+                    <th>Email Address</th>
+                    <th>Age</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="studentsTableBody">
+                <% if (students && students.length > 0) { %>
+                    <% students.forEach(student => { %>
+                        <tr class="student-row">
+                            <td>
+                                <div class="user-info-cell">
+                                    <img src="https://i.pravatar.cc/100?img=<%= (student._id.toString().charCodeAt(student._id.toString().length - 1) % 70) %>" alt="avatar">
+                                    <div>
+                                        <h4><%= student.username %></h4>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="student-email" style="color: #BEBEBE;"><%= student.email %></td>
+                            <td><%= student.age || '—' %></td>
+                            <td><span class="badge badge-student">Student</span></td>
+                            <td><span class="badge badge-approved">Active</span></td>
+                        </tr>
+                    <% }) %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="5" style="text-align: center; color: #BEBEBE; padding: 30px;">
+                            No registered students found in the database.
+                        </td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+</div>
+
+<script>
+function filterStudents() {
+    const query = document.getElementById('studentSearch').value.toLowerCase();
+    const rows = document.querySelectorAll('.student-row');
+    rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        row.style.display = text.includes(query) ? '' : 'none';
+    });
+}
+</script>
+
+</body>
+</html>
