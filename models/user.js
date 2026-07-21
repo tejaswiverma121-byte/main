@@ -7,7 +7,8 @@ let userschema=new mongoose.Schema({
     password:String,
     age:Number,
     role:String,
-    isApproved: { type: Boolean, default: false }
+    isApproved: { type: Boolean, default: false },
+    purchasedCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'course' }]
 })
 
 module.exports=mongoose.model("user",userschema);
