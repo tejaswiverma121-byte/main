@@ -53,11 +53,13 @@
 
             </form>
 
+            <% if (role !== 'admin') { %>
             <p class="register">
                 Don't have an account?
 
                 <a href="/create">Create Account</a>
             </p>
+            <% } %>
 
         </div>
 
