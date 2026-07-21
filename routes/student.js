@@ -104,4 +104,39 @@ router.get('/student/wishlist', isLoggedIn, async (req, res) => {
     }
 });
 
+// View profile
+router.get('/student/profile', isLoggedIn, async (req, res) => {
+    if (req.userinfo.role !== 'student') return res.redirect('/');
+    try {
+        const user = await userModel.findById(req.userinfo.userid);
+        res.render('student_profile', { user, activePage: 'profile', successMsg: null, errorMsg: null });
+    } catch (err) {
+        console.error('Error loading profile:', err);
+        res.redirect('/');
+    }
+});
+
+// Update profile
+router.post('/student/profile/update', isLoggedIn, async (req, res) => {
+    if (req.userinfo.role !== 'student') return res.redirect('/');
+    try {
+        const { username, age, bio, profilePic } = req.body;
+
+        const updateData = {};
+        if (username && username.trim()) updateData.username = username.trim();
+        if (age) updateData.age = Number(age);
+        if (bio !== undefined) updateData.bio = bio.trim();
+        if (profilePic && profilePic.trim()) updateData.profilePic = profilePic.trim();
+
+        await userModel.findByIdAndUpdate(req.userinfo.userid, updateData);
+
+        const user = await userModel.findById(req.userinfo.userid);
+        res.render('student_profile', { user, activePage: 'profile', successMsg: 'Profile updated successfully!', errorMsg: null });
+    } catch (err) {
+        console.error('Error updating profile:', err);
+        const user = await userModel.findById(req.userinfo.userid);
+        res.render('student_profile', { user, activePage: 'profile', successMsg: null, errorMsg: 'Failed to update profile. Please try again.' });
+    }
+});
+
 module.exports = router;
