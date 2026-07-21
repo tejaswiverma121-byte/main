@@ -1,0 +1,167 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+
+    height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:linear-gradient(
+        135deg,
+        #4F46E5,
+        #6D28D9,
+        #9333EA
+    );
+
+    overflow:hidden;
+}
+
+/* floating circles */
+
+body::before{
+    content:"";
+    position:absolute;
+    width:320px;
+    height:320px;
+    background:rgba(255,255,255,0.08);
+    border-radius:50%;
+    top:-80px;
+    left:-60px;
+}
+
+body::after{
+    content:"";
+    position:absolute;
+    width:260px;
+    height:260px;
+    background:rgba(255,255,255,0.08);
+    border-radius:50%;
+    bottom:-80px;
+    right:-50px;
+}
+
+.container{
+
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.glass-card{
+
+    width:500px;
+
+    padding:50px;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,.15);
+
+    backdrop-filter:blur(15px);
+
+    border:1px solid rgba(255,255,255,.2);
+
+    box-shadow:
+    0 15px 40px rgba(0,0,0,.25);
+
+    text-align:center;
+
+    color:white;
+}
+
+.glass-card h1{
+
+    font-size:55px;
+
+    margin-bottom:10px;
+
+    letter-spacing:2px;
+}
+
+.tagline{
+
+    font-size:20px;
+
+    font-weight:500;
+
+    margin-bottom:20px;
+
+    color:#F8FAFC;
+}
+
+.description{
+
+    line-height:1.8;
+
+    color:#E2E8F0;
+
+    margin-bottom:40px;
+}
+
+.buttons{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:20px;
+}
+
+button{
+
+    border:none;
+
+    cursor:pointer;
+
+    padding:15px 35px;
+
+    font-size:16px;
+
+    border-radius:50px;
+
+    transition:.35s;
+}
+
+.login-btn{
+
+    background:white;
+
+    color:#4F46E5;
+
+    font-weight:600;
+}
+
+.login-btn:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 10px 25px rgba(255,255,255,.4);
+}
+
+.register-btn{
+
+    background:transparent;
+
+    color:white;
+
+    border:2px solid white;
+
+    font-weight:600;
+}
+
+.register-btn:hover{
+
+    background:white;
+
+    color:#4F46E5;
+
+    transform:translateY(-5px);
+}

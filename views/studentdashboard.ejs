@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LearnHub Dashboard</title>
+
+    <link rel="stylesheet" href="/stylesheets/studentdashboard.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <i class="fa-solid fa-graduation-cap"></i>
+
+            <span>LearnHub</span>
+
+        </div>
+
+        <ul>
+
+            <li class="active">
+                <i class="fa-solid fa-house"></i>
+                Dashboard
+            </li>
+
+            <li>
+                <i class="fa-solid fa-book-open"></i>
+                My Courses
+            </li>
+
+            <li>
+                <i class="fa-regular fa-heart"></i>
+                Wishlist
+            </li>
+
+            <li>
+                <i class="fa-solid fa-chart-line"></i>
+                Progress
+            </li>
+
+            <li>
+                <i class="fa-regular fa-message"></i>
+                Messages
+            </li>
+
+            <li>
+                <i class="fa-regular fa-user"></i>
+                Profile
+            </li>
+
+        </ul>
+
+        <a href="/logout" class="logout"> <i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+
+    </aside>
+
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main">
+
+        <!-- Top Bar -->
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>
+
+                    Welcome Back,
+
+                    <%= user.username %> 👋
+
+                </h1>
+
+                <p>
+
+                    Keep learning and grow your skills every day.
+
+                </p>
+
+            </div>
+
+            <div class="profile">
+
+                <i class="fa-regular fa-bell"></i>
+
+                <img
+                src="https://i.pravatar.cc/100?img=32"
+                alt="profile">
+
+            </div>
+
+        </div>
+
+
+
+        <!-- Search -->
+
+        <div class="search">
+
+            <input
+
+            type="text"
+
+            placeholder="Search for courses...">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+        </div>
+
+
+
+        <!-- Continue Learning -->
+
+        <div class="section-header">
+
+            <h2>Continue Learning</h2>
+
+            <a href="#">View All</a>
+
+        </div>
+
+
+        <!-- Course Cards -->
+
+        <div class="courses">
+
+            <div class="course-card">
+
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg">
+
+                <h3>JavaScript</h3>
+
+                <p>Basics to Advanced</p>
+
+                <div class="progress">
+
+                    <div class="fill js"></div>
+
+                </div>
+
+                <span>60% Complete</span>
+
+            </div>
+
+
+
+            <div class="course-card">
+
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg">
+
+                <h3>Node.js</h3>
+
+                <p>Backend Development</p>
+
+                <div class="progress">
+
+                    <div class="fill node"></div>
+
+                </div>
+
+                <span>35% Complete</span>
+
+            </div>
+
+
+
+            <div class="course-card">
+
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg">
+
+                <h3>MongoDB</h3>
+
+                <p>Database Essentials</p>
+
+                <div class="progress">
+
+                    <div class="fill mongo"></div>
+
+                </div>
+
+                <span>45% Complete</span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- Recommended Section -->
+
+        <div class="section-header">
+
+            <h2>Recommended For You</h2>
+
+            <a href="#">View All</a>
+
+        </div>
+
+        <div class="recommended">
+
+            <div class="small-card">
+
+                <h3>React.js</h3>
+
+                <p>⭐ 4.8</p>
+
+            </div>
+
+            <div class="small-card">
+
+                <h3>Express.js</h3>
+
+                <p>⭐ 4.7</p>
+
+            </div>
+
+            <div class="small-card">
+
+                <h3>HTML & CSS</h3>
+
+                <p>⭐ 4.9</p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

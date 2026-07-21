@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LearnHub | Create Account</title>
+
+    <link rel="stylesheet" href="/stylesheets/createaccount.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Left Section -->
+
+    <div class="left">
+
+        <h1>LearnHub</h1>
+
+        <h2>Start Your Journey 🚀</h2>
+
+        <p>
+            Join thousands of learners and instructors.
+            Learn new skills, build amazing projects,
+            and unlock your future with LearnHub.
+        </p>
+
+    </div>
+
+    <!-- Right Section -->
+
+    <div class="right">
+
+        <div class="register-card">
+
+            <h2>Create Account</h2>
+
+            <p class="subtitle">
+                It's quick and easy.
+            </p>
+
+            <form action="/create" method="POST">
+
+                <input type="text" name="username" placeholder="Username" required >
+
+                <input type="email" name="email" placeholder="Email Address"required>
+
+                <input type="password" name="password" placeholder="Password"required>
+
+                <input type="number" name="age" placeholder="Age" required>
+
+                <input type="text" name="role" placeholder="whor are you? ur Role..." required>
+                
+                <button type="submit">Create Account</button>
+
+            </form>
+
+            <p class="login">
+
+                Already have an account?
+
+                <a href="/login">Login</a>
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

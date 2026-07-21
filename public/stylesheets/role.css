@@ -1,0 +1,187 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:linear-gradient(
+        135deg,
+        #4F46E5,
+        #6D28D9,
+        #9333EA
+    );
+}
+
+.container{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+}
+
+.role-card{
+
+    width:1100px;
+
+    padding:50px;
+
+    background:rgba(255,255,255,.12);
+
+    backdrop-filter:blur(20px);
+
+    border-radius:25px;
+
+    border:1px solid rgba(255,255,255,.15);
+
+    text-align:center;
+
+    color:white;
+
+    box-shadow:0 20px 50px rgba(0,0,0,.35);
+}
+
+.role-card h1{
+
+    font-size:42px;
+
+    margin-bottom:12px;
+}
+
+.subtitle{
+
+    color:#ececec;
+
+    margin-bottom:45px;
+
+    font-size:18px;
+}
+
+.roles{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:30px;
+
+    margin-bottom:45px;
+}
+
+.role-option input{
+
+    display:none;
+}
+
+.card{
+
+    width:280px;
+
+    padding:35px 25px;
+
+    background:rgba(255,255,255,.08);
+
+    border:2px solid transparent;
+
+    border-radius:20px;
+
+    cursor:pointer;
+
+    transition:.35s;
+}
+
+.card:hover{
+
+    transform:translateY(-8px);
+
+    background:rgba(255,255,255,.16);
+}
+
+.role-option input:checked + .card{
+
+    border:2px solid white;
+
+    background:rgba(255,255,255,.22);
+
+    transform:scale(1.05);
+}
+
+.icon{
+
+    font-size:60px;
+
+    margin-bottom:18px;
+}
+
+.card h2{
+
+    margin-bottom:15px;
+
+    font-size:26px;
+}
+
+.card p{
+
+    line-height:1.8;
+
+    color:#ececec;
+
+    font-size:15px;
+}
+
+button{
+
+    padding:16px 45px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:white;
+
+    color:#4F46E5;
+
+    font-size:17px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+button:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 15px 35px rgba(0,0,0,.3);
+}
+
+@media(max-width:1000px){
+
+    .roles{
+
+        flex-direction:column;
+
+        align-items:center;
+    }
+
+    .role-card{
+
+        width:90%;
+
+        padding:35px;
+    }
+}

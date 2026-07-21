@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>LearnHub Admin Dashboard</title>
+
+    <link rel="stylesheet"
+        href="/stylesheets/admin.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar">
+
+<div>
+
+<div class="logo">
+
+<i class="fa-solid fa-graduation-cap"></i>
+
+<span>LearnHub</span>
+
+</div>
+
+<ul>
+
+<li class="active">
+
+<i class="fa-solid fa-house"></i>
+
+Dashboard
+
+</li>
+
+<li>
+
+<i class="fa-solid fa-users"></i>
+
+Users
+
+</li>
+
+<li>
+
+<i class="fa-solid fa-chalkboard-user"></i>
+
+Instructors
+
+</li>
+
+<li>
+
+<i class="fa-solid fa-book"></i>
+
+Courses
+
+</li>
+
+<li>
+
+<i class="fa-solid fa-chart-column"></i>
+
+Reports
+
+</li>
+
+<li>
+
+<i class="fa-solid fa-layer-group"></i>
+
+Categories
+
+</li>
+
+<li>
+
+<i class="fa-solid fa-gear"></i>
+
+Settings
+
+</li>
+
+</ul>
+
+</div>
+
+<a href="/logout" class="logout">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+Logout
+
+</a>
+
+</aside>
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+<div class="topbar">
+
+<div>
+
+<h1>
+
+Admin Dashboard
+
+</h1>
+
+<p>
+
+Welcome,
+
+<%= user.username %>
+
+👋
+
+</p>
+
+</div>
+
+<div class="profile">
+
+<i class="fa-regular fa-bell"></i>
+
+<img
+src="https://i.pravatar.cc/100?img=12">
+
+</div>
+
+</div>
+
+<!-- ================= STATISTICS ================= -->
+
+<div class="stats">
+
+<div class="stat-card">
+
+<div>
+
+<h4>Total Users</h4>
+
+<h2>5,320</h2>
+
+<span class="green">+12% this month</span>
+
+</div>
+
+<div class="icon purple">
+
+<i class="fa-solid fa-users"></i>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div>
+
+<h4>Instructors</h4>
+
+<h2>320</h2>
+
+<span class="green">+8%</span>
+
+</div>
+
+<div class="icon blue">
+
+<i class="fa-solid fa-chalkboard-user"></i>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div>
+
+<h4>Courses</h4>
+
+<h2>540</h2>
+
+<span class="green">+15%</span>
+
+</div>
+
+<div class="icon green-bg">
+
+<i class="fa-solid fa-book-open"></i>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div>
+
+<h4>Revenue</h4>
+
+<h2>₹12,45,320</h2>
+
+<span class="green">+18%</span>
+
+</div>
+
+<div class="icon yellow">
+
+<i class="fa-solid fa-indian-rupee-sign"></i>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ================= LOWER GRID ================= -->
+
+<div class="bottom-grid">
+
+<!-- RECENT USERS -->
+
+<div class="recent-users">
+
+<h2>
+
+Recent Users
+
+</h2>
+
+<div class="user-row">
+
+<img src="https://randomuser.me/api/portraits/women/44.jpg">
+
+<div>
+
+<h4>Abirami</h4>
+
+<p>abirami@gmail.com</p>
+
+</div>
+
+<span>
+
+Instructor
+
+</span>
+
+<small>
+
+2 mins ago
+
+</small>
+
+</div>
+
+<div class="user-row">
+
+<img src="https://randomuser.me/api/portraits/men/32.jpg">
+
+<div>
+
+<h4>Rohit Sharma</h4>
+
+<p>rohit@gmail.com</p>
+
+</div>
+
+<span>
+
+Student
+
+</span>
+
+<small>
+
+25 mins ago
+
+</small>
+
+</div>
+
+<div class="user-row">
+
+<img src="https://randomuser.me/api/portraits/women/65.jpg">
+
+<div>
+
+<h4>Priya</h4>
+
+<p>priya@gmail.com</p>
+
+</div>
+
+<span>
+
+Student
+
+</span>
+
+<small>
+
+1 hour ago
+
+</small>
+
+</div>
+
+<div class="user-row">
+
+<img src="https://randomuser.me/api/portraits/men/50.jpg">
+
+<div>
+
+<h4>Rahul</h4>
+
+<p>rahul@gmail.com</p>
+
+</div>
+
+<span>
+
+Instructor</span>
+
+<small>
+
+3 hours ago
+
+</small>
+
+</div>
+
+</div>
+
+<!-- ================= GRAPH ================= -->
+
+<div class="analytics">
+
+<h2>
+
+Platform Analytics
+
+</h2>
+
+<div class="graph">
+
+<div class="line"></div>
+
+<div class="months">
+
+<span>Jan</span>
+
+<span>Feb</span>
+
+<span>Mar</span>
+
+<span>Apr</span>
+
+<span>May</span>
+
+<span>Jun</span>
+
+<span>Jul</span>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</main>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Instructor Dashboard</title>
+
+    <link rel="stylesheet" href="/stylesheets/instructor.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar">
+
+    <div>
+
+        <div class="logo">
+
+            <i class="fa-solid fa-graduation-cap"></i>
+
+            <span>LearnHub</span>
+
+        </div>
+
+        <ul>
+
+            <li class="active">
+
+                <i class="fa-solid fa-house"></i>
+
+                Dashboard
+
+            </li>
+
+            <li>
+
+                <i class="fa-solid fa-book-open"></i>
+
+                My Courses
+
+            </li>
+
+            <li>
+
+                <i class="fa-solid fa-plus"></i>
+
+                Create Course
+
+            </li>
+
+            <li>
+
+                <i class="fa-solid fa-users"></i>
+
+                Students
+
+            </li>
+
+            <li>
+
+                <i class="fa-solid fa-wallet"></i>
+
+                Earnings
+
+            </li>
+
+            <li>
+
+                <i class="fa-regular fa-message"></i>
+
+                Messages
+
+            </li>
+
+            <li>
+
+                <i class="fa-regular fa-user"></i>
+
+                Profile
+
+            </li>
+
+        </ul>
+
+    </div>
+
+    <a href="/logout" class="logout">
+
+        <i class="fa-solid fa-right-from-bracket"></i>
+
+        Logout
+
+    </a>
+
+</aside>
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+<div class="topbar">
+
+    <div>
+
+        <h1>
+
+            Welcome Back,
+
+            <%= user.username %> 👋
+
+        </h1>
+
+        <p>
+
+            Manage your courses and inspire thousands of learners.
+
+        </p>
+
+    </div>
+
+    <div class="profile">
+
+        <i class="fa-regular fa-bell"></i>
+
+        <img src="https://i.pravatar.cc/100?img=15">
+
+    </div>
+
+</div>
+
+<!-- ================= STATS ================= -->
+
+<div class="stats">
+
+<div class="stat-card">
+
+    <div>
+
+        <h4>Total Courses</h4>
+
+        <h2>12</h2>
+
+    </div>
+
+    <i class="fa-solid fa-book"></i>
+
+</div>
+
+<div class="stat-card">
+
+    <div>
+
+        <h4>Total Students</h4>
+
+        <h2>1248</h2>
+
+    </div>
+
+    <i class="fa-solid fa-users"></i>
+
+</div>
+
+<div class="stat-card">
+
+    <div>
+
+        <h4>Earnings</h4>
+
+        <h2>₹55,230</h2>
+
+    </div>
+
+    <i class="fa-solid fa-indian-rupee-sign"></i>
+
+</div>
+
+<div class="stat-card">
+
+    <div>
+
+        <h4>Reviews</h4>
+
+        <h2>324</h2>
+
+    </div>
+
+    <i class="fa-solid fa-star"></i>
+
+</div>
+
+</div>
+
+<!-- ================= TABLE ================= -->
+
+<div class="table-header">
+
+<h2>My Courses</h2>
+
+<button>
+
+<i class="fa-solid fa-plus"></i>
+
+Create New Course
+
+</button>
+
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Course</th>
+
+<th>Students</th>
+
+<th>Price</th>
+
+<th>Status</th>
+
+<th>Actions</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td>JavaScript Complete Guide</td>
+
+<td>421</td>
+
+<td>₹499</td>
+
+<td>
+
+<span class="published">
+
+Published
+
+</span>
+
+</td>
+
+<td>
+
+<button class="action">
+
+<i class="fa-solid fa-pen"></i>
+
+</button>
+
+<button class="action">
+
+<i class="fa-solid fa-trash"></i>
+
+</button>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>Node.js Backend Development</td>
+
+<td>358</td>
+
+<td>₹599</td>
+
+<td>
+
+<span class="published">
+
+Published
+
+</span>
+
+</td>
+
+<td>
+
+<button class="action">
+
+<i class="fa-solid fa-pen"></i>
+
+</button>
+
+<button class="action">
+
+<i class="fa-solid fa-trash"></i>
+
+</button>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>MongoDB Masterclass</td>
+
+<td>289</td>
+
+<td>₹499</td>
+
+<td>
+
+<span class="draft">
+
+Draft
+
+</span>
+
+</td>
+
+<td>
+
+<button class="action">
+
+<i class="fa-solid fa-pen"></i>
+
+</button>
+
+<button class="action">
+
+<i class="fa-solid fa-trash"></i>
+
+</button>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>Express.js API Development</td>
+
+<td>180</td>
+
+<td>₹399</td>
+
+<td>
+
+<span class="published">
+
+Published
+
+</span>
+
+</td>
+
+<td>
+
+<button class="action">
+
+<i class="fa-solid fa-pen"></i>
+
+</button>
+
+<button class="action">
+
+<i class="fa-solid fa-trash"></i>
+
+</button>
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</main>
+
+</div>
+
+</body>
+</html>
