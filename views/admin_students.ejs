@@ -39,7 +39,12 @@
                     Instructors
                 </li>
             </a>
-            <li><i class="fa-solid fa-book"></i> Courses</li>
+            <a href="/admin/courses">
+                <li class="<%= (typeof activePage !== 'undefined' && activePage === 'courses') ? 'active' : '' %>">
+                    <i class="fa-solid fa-book"></i>
+                    Courses
+                </li>
+            </a>
             <li><i class="fa-solid fa-chart-column"></i> Reports</li>
             <li><i class="fa-solid fa-layer-group"></i> Categories</li>
             <li><i class="fa-solid fa-gear"></i> Settings</li>

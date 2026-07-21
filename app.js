@@ -10,6 +10,7 @@ const authRoutes       = require('./routes/auth');
 const studentRoutes    = require('./routes/student');
 const instructorRoutes = require('./routes/instructor');
 const adminRoutes      = require('./routes/admin');
+const courseRoutes     = require('./routes/course');
 
 const app  = express();
 const PORT = process.env.PORT || 4000;
@@ -32,6 +33,7 @@ app.use('/', authRoutes);
 app.use('/', studentRoutes);
 app.use('/', instructorRoutes);
 app.use('/', adminRoutes);
+app.use('/', courseRoutes);
 
 // Server startup & admin auto-seeding
 app.listen(PORT, async () => {
