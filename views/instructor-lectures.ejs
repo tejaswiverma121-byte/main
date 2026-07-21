@@ -8,56 +8,97 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
+        .lectures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 22px;
+            margin-top: 24px;
+        }
+
         .lecture-card {
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 14px;
-            padding: 18px 22px;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .lecture-card-head {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             margin-bottom: 14px;
         }
 
-        .lecture-card h4 {
+        .lecture-card-head h4 {
             color: white;
+            font-size: 17px;
             margin-bottom: 4px;
         }
 
-        .lecture-card span {
+        .lecture-card-head span {
             color: #9f9f9f;
-            font-size: 13px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .lecture-video {
-            margin-top: 10px;
-        }
-
-        .lecture-video video, .lecture-video iframe {
-            width: 100%;
-            max-width: 480px;
-            border-radius: 10px;
+        .lecture-delete-btn {
+            background: rgba(239, 68, 68, 0.12);
             border: none;
+            color: #EF4444;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: 0.25s;
+        }
+
+        .lecture-delete-btn:hover {
+            background: rgba(239, 68, 68, 0.25);
+        }
+
+        .lecture-video-wrap {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .lecture-video-wrap video,
+        .lecture-video-wrap iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        .empty-lectures {
+            color: #BEBEBE;
+            background: rgba(255,255,255,0.03);
+            border: 1px dashed rgba(255,255,255,0.15);
+            border-radius: 14px;
+            padding: 40px;
+            text-align: center;
+            margin-top: 20px;
         }
 
         .add-lecture-form {
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.08);
             border-radius: 16px;
-            padding: 30px;
-            margin-top: 30px;
+            padding: 32px;
+            margin-top: 34px;
+            max-width: 520px;
         }
 
-        .add-lecture-form input {
-            width: 100%;
-            background: #15132B;
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 10px;
-            padding: 12px 16px;
+        .add-lecture-form h3 {
             color: white;
-            font-size: 14px;
-            margin-bottom: 16px;
-            outline: none;
+            margin-bottom: 22px;
+            font-size: 19px;
         }
 
         .add-lecture-form label {
@@ -65,22 +106,95 @@
             font-size: 13px;
             display: block;
             margin-bottom: 6px;
+            font-weight: 500;
         }
 
-        .add-lecture-form .or-divider {
+        .add-lecture-form input[type="text"] {
+            width: 100%;
+            background: #15132B;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: white;
+            font-size: 14px;
+            margin-bottom: 18px;
+            outline: none;
+            transition: 0.25s;
+        }
+
+        .add-lecture-form input[type="text"]:focus {
+            border-color: #8B5CF6;
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.25);
+        }
+
+        .file-upload-wrap {
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        .file-upload-wrap input[type="file"] {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #15132B;
+            border: 1.5px dashed rgba(255,255,255,0.18);
+            border-radius: 10px;
+            padding: 16px;
+            color: #9f9f9f;
+            font-size: 14px;
+            transition: 0.25s;
+        }
+
+        .file-upload-box i {
+            font-size: 18px;
+            color: #8B5CF6;
+        }
+
+        .file-upload-wrap:hover .file-upload-box {
+            border-color: #8B5CF6;
+            background: rgba(139, 92, 246, 0.06);
+        }
+
+        .file-upload-box .file-name {
+            color: white;
+            font-weight: 500;
+        }
+
+        .or-divider {
             text-align: center;
             color: #666;
-            margin: 10px 0 20px;
+            font-size: 13px;
+            margin: 4px 0 18px;
+            position: relative;
         }
 
         .add-lecture-form button {
             background: linear-gradient(135deg, #6D28D9, #9333EA);
             color: white;
             border: none;
-            padding: 13px 26px;
+            padding: 13px 28px;
             border-radius: 10px;
             font-weight: 600;
+            font-size: 14px;
             cursor: pointer;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-lecture-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(139, 92, 246, 0.35);
         }
     </style>
 </head>
@@ -130,13 +244,20 @@
     </div>
 
     <% if (locals.lectures && lectures.length > 0) { %>
-        <% lectures.forEach(lecture => { %>
-            <div class="lecture-card" id="lecture-<%= lecture._id %>">
-                <div style="flex:1;">
-                    <h4><%= lecture.title %></h4>
-                    <span><%= lecture.videoType === 'youtube' ? 'YouTube Video' : 'Uploaded Video' %></span>
+        <div class="lectures-grid">
+            <% lectures.forEach(lecture => { %>
+                <div class="lecture-card" id="lecture-<%= lecture._id %>">
+                    <div class="lecture-card-head">
+                        <div>
+                            <h4><%= lecture.title %></h4>
+                            <span><%= lecture.videoType === 'youtube' ? 'YouTube Video' : 'Uploaded Video' %></span>
+                        </div>
+                        <button class="lecture-delete-btn" onclick="deleteLecture('<%= lecture._id %>')">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
 
-                    <div class="lecture-video">
+                    <div class="lecture-video-wrap">
                         <% if (lecture.videoType === 'youtube') { %>
                             <%
                                 let ytId = lecture.videoUrl;
@@ -146,29 +267,34 @@
                                     ytId = ytId.split('youtu.be/')[1].split('?')[0];
                                 }
                             %>
-                            <iframe height="270" src="https://www.youtube.com/embed/<%= ytId %>" allowfullscreen></iframe>
+                            <iframe src="https://www.youtube.com/embed/<%= ytId %>" allowfullscreen></iframe>
                         <% } else { %>
                             <video controls src="<%= lecture.videoUrl %>"></video>
                         <% } %>
                     </div>
                 </div>
-                <button class="action" onclick="deleteLecture('<%= lecture._id %>')">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
-            </div>
-        <% }) %>
+            <% }) %>
+        </div>
     <% } else { %>
-        <p style="color:#BEBEBE;">No lectures added yet.</p>
+        <div class="empty-lectures">
+            No lectures added yet. Add your first one below.
+        </div>
     <% } %>
 
     <div class="add-lecture-form">
-        <h3 style="color:white; margin-bottom:20px;">Add New Lecture</h3>
+        <h3>Add New Lecture</h3>
         <form action="/dashboard/instructor/courses/<%= course._id %>/lectures/add" method="POST" enctype="multipart/form-data">
             <label>Lecture Title</label>
             <input type="text" name="title" placeholder="e.g. Introduction to HTML" required>
 
             <label>Upload Video File</label>
-            <input type="file" name="videoFile" accept="video/mp4,video/webm,video/ogg">
+            <div class="file-upload-wrap">
+                <input type="file" name="videoFile" id="videoFile" accept="video/mp4,video/webm,video/ogg" onchange="updateFileName(this)">
+                <div class="file-upload-box">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span id="fileNameDisplay">Click to choose a video, or drag one here</span>
+                </div>
+            </div>
 
             <div class="or-divider">— OR —</div>
 
@@ -201,6 +327,17 @@ async function deleteLecture(id) {
     } catch (err) {
         console.error(err);
         alert('An error occurred.');
+    }
+}
+
+function updateFileName(input) {
+    const display = document.getElementById('fileNameDisplay');
+    if (input.files && input.files.length > 0) {
+        display.textContent = input.files[0].name;
+        display.classList.add('file-name');
+    } else {
+        display.textContent = 'Click to choose a video, or drag one here';
+        display.classList.remove('file-name');
     }
 }
 </script>

@@ -41,7 +41,7 @@ router.post('/courses/create', isLoggedIn, canManageCourses, async (req, res) =>
             return res.json({ success: true, course: newCourse });
         }
 
-        const redirectUrl = req.userinfo.role === 'admin' ? '/admin/courses' : '/dashboard/instructor';
+        const redirectUrl = req.userinfo.role === 'admin' ? '/admin/courses' : '/dashboard/instructor/courses';
         res.redirect(redirectUrl);
     } catch (err) {
         console.error('Error creating course:', err);
@@ -79,7 +79,7 @@ router.post('/courses/edit/:id', isLoggedIn, canManageCourses, async (req, res) 
             return res.json({ success: true, course });
         }
 
-        const redirectUrl = req.userinfo.role === 'admin' ? '/admin/courses' : '/dashboard/instructor';
+        const redirectUrl = req.userinfo.role === 'admin' ? '/admin/courses' : '/dashboard/instructor/courses';
         res.redirect(redirectUrl);
     } catch (err) {
         console.error('Error updating course:', err);
@@ -99,7 +99,7 @@ router.post('/courses/delete/:id', isLoggedIn, canManageCourses, async (req, res
             return res.json({ success: true });
         }
 
-        const redirectUrl = req.userinfo.role === 'admin' ? '/admin/courses' : '/dashboard/instructor';
+        const redirectUrl = req.userinfo.role === 'admin' ? '/admin/courses' : '/dashboard/instructor/courses';
         res.redirect(redirectUrl);
     } catch (err) {
         console.error('Error deleting course:', err);
