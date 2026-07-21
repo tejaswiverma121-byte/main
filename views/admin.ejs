@@ -223,14 +223,35 @@ src="https://i.pravatar.cc/100?img=12">
 
 </div>
 
-<div class="icon yellow">
-
-<i class="fa-solid fa-indian-rupee-sign"></i>
-
 </div>
 
 </div>
 
+<!-- ================= PENDING INSTRUCTORS ================= -->
+<div class="recent-users" style="margin-bottom: 40px; width: 100%;">
+    <h2>Pending Instructor Approvals</h2>
+    <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+        <% if (locals.pendingInstructors && pendingInstructors.length > 0) { %>
+            <% pendingInstructors.forEach(instructor => { %>
+                <div class="user-row" id="row-<%= instructor._id %>" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,.08); padding-bottom: 15px;">
+                    <div style="display: flex; align-items: center; gap: 18px;">
+                        <img src="https://i.pravatar.cc/100?img=<%= Math.floor(Math.random() * 70) %>" style="width: 50px; height: 50px; border-radius: 50%;">
+                        <div>
+                            <h4 style="margin: 0; color: white;"><%= instructor.username %></h4>
+                            <p style="margin: 4px 0 0; color: #BEBEBE; font-size: 14px;"><%= instructor.email %> (Age: <%= instructor.age %>)</p>
+                        </div>
+                    </div>
+                    <div>
+                        <button onclick="approveInstructor('<%= instructor._id %>')" style="background: linear-gradient(135deg, #10B981, #059669); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);">
+                            Approve
+                        </button>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p style="color: #BEBEBE;">No pending instructor approvals at the moment.</p>
+        <% } %>
+    </div>
 </div>
 
 <!-- ================= LOWER GRID ================= -->
@@ -392,6 +413,41 @@ Platform Analytics
 </main>
 
 </div>
+
+<script>
+async function approveInstructor(id) {
+    try {
+        const response = await fetch(`/admin/approve/${id}`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+        if (response.ok) {
+            const row = document.getElementById(`row-${id}`);
+            if (row) {
+                row.style.transition = 'all 0.5s ease';
+                row.style.opacity = '0';
+                row.style.transform = 'translateX(50px)';
+                setTimeout(() => {
+                    row.remove();
+                    // If no more rows, show the empty state message
+                    const container = document.querySelector('.recent-users div[style*="flex-direction: column"]');
+                    if (container && container.querySelectorAll('.user-row').length === 0) {
+                        container.innerHTML = '<p style="color: #BEBEBE;">No pending instructor approvals at the moment.</p>';
+                    }
+                }, 500);
+            }
+        } else {
+            alert('Failed to approve instructor');
+        }
+    } catch (err) {
+        console.error('Error approving instructor:', err);
+        alert('An error occurred. Please try again.');
+    }
+}
+</script>
 
 </body>
 

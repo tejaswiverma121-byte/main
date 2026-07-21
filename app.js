@@ -60,13 +60,10 @@ app.post("/create",(req,res)=>{
                     age:req.body.age,
                     role:req.body.role
                 })
-                //console.log("user created sucessfully");
-                res.render("creationsucessfull");
-
                 //create a cookie and send it to the browser
                 let token=jwt.sign({userid:user._id,email:user.email,role:user.role},"shhh");
                 res.cookie("token",token);
-                res.redirect("/login/" + user.role);
+                res.render("creationsucessfull");
             }
             
         })
@@ -118,29 +115,23 @@ app.post("/login/:role",async(req,res)=>{
         //verify the password
         bcrypt.compare(req.body.password,user.password,async(err,result)=>{
             if(!result){
-            return res.send("you cannot login!!");
+                return res.render("loginfailed");
             }
-            if(result){
-                if(user.role==="instructor"&&!user.isApproved){
-                    return res.send("Your instructor account is pending admin approval.");
-                }
-                if(user.role==="student"){
-                    res.render("studentdashboard",{user:user});
-                }
-                else if(user.role === "instructor"){
-                    res.render("instructor",{user:user});
-                }
-                else if(user.role==="admin"){
-                    res.render("admin",{user:user});
-                }
-                //create a token and send a cookie
-                let token=jwt.sign({userid:user._id,email:user.email,role:user.role},"shhh");
-                res.cookie("token",token);
+            if(user.role==="instructor"&&!user.isApproved){
+                return res.send("Your instructor account is pending admin approval.");
+            }
+            //create a token and send a cookie
+            let token=jwt.sign({userid:user._id,email:user.email,role:user.role},"shhh");
+            res.cookie("token",token);
 
+            if(user.role==="student"){
+                res.render("studentdashboard",{user:user});
             }
-            else{
-                //res.send("you cannot login!!");
-                res.render("loginfailed");
+            else if(user.role === "instructor"){
+                res.render("instructor",{user:user});
+            }
+            else if(user.role==="admin"){
+                res.render("admin",{user:user});
             }
         })
     }
@@ -170,6 +161,9 @@ app.post("/adminlogin",async(req,res)=>{
 
 app.post("/admin/approve/:id", async(req,res)=>{
     await userModel.findByIdAndUpdate(req.params.id, { isApproved:true });
+    if (req.headers['accept'] && req.headers['accept'].includes('application/json')) {
+        return res.json({ success: true });
+    }
     res.redirect("/admin/login");
 })
 
