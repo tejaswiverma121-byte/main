@@ -32,6 +32,15 @@
             transform: scale(1.1);
             background: rgba(15, 13, 35, 0.85);
         }
+        .sidebar-badge {
+            background: #EF4444;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 10px;
+            margin-left: auto;
+        }
     </style>
 </head>
 <body>
@@ -64,6 +73,7 @@
                 <li class="active">
                     <i class="fa-solid fa-heart" style="color: #EF4444;"></i>
                     Wishlist
+                    <span id="wishlist-count-badge" class="sidebar-badge"><%= (locals.courses && courses.length) || 0 %></span>
                 </li>
             </a>
 
@@ -124,6 +134,7 @@
         <div class="courses">
             <% if (locals.courses && courses.length > 0) { %>
                 <% courses.forEach(course => { %>
+                    <% if (course) { %>
                     <div class="course-card" id="course-card-<%= course._id %>" style="display: flex; flex-direction: column; justify-content: space-between; position: relative;">
                         
                         <!-- Remove from Wishlist button -->
@@ -134,7 +145,7 @@
                         <div>
                             <img src="<%= course.thumbnail %>" alt="<%= course.title %>" style="width: 100%; height: 160px; object-fit: cover; border-radius: 12px; margin-bottom: 15px;">
                             <h3 style="margin-top: 10px; font-size: 20px;"><%= course.title %></h3>
-                            <p style="font-size: 14px; color: #BEBEBE; line-height: 1.5; margin-bottom: 15px;"><%= course.description.substring(0, 80) %><%= course.description.length > 80 ? '...' : '' %></p>
+                            <p style="font-size: 14px; color: #BEBEBE; line-height: 1.5; margin-bottom: 15px;"><%= course.description ? (course.description.substring(0, 80) + (course.description.length > 80 ? '...' : '')) : '' %></p>
                         </div>
                         <div>
                             <div class="course-card-details">
@@ -142,7 +153,7 @@
                                 <span class="price"><%= course.price === 0 ? 'Free' : '₹' + course.price %></span>
                             </div>
                             
-                            <% if (user.purchasedCourses && user.purchasedCourses.some(cId => cId.toString() === course._id.toString())) { %>
+                            <% if (user.purchasedCourses && user.purchasedCourses.some(cId => cId && (cId._id ? cId._id.toString() : cId.toString()) === course._id.toString())) { %>
                                 <button class="enroll-btn enrolled" disabled style="margin-top: 15px;">✓ Enrolled</button>
                             <% } else { %>
                                 <form action="/student/buy/<%= course._id %>" method="POST" style="margin: 0;">
@@ -151,8 +162,9 @@
                             <% } %>
                         </div>
                     </div>
+                    <% } %>
                 <% }) %>
-            <% else { %>
+            <% } else { %>
                 <div class="no-courses-msg" style="grid-column: 1 / -1; text-align: center; padding: 50px 0;">
                     <i class="fa-regular fa-heart" style="font-size: 40px; color: #EF4444; margin-bottom: 15px; display: block;"></i>
                     Your wishlist is empty.
@@ -183,9 +195,16 @@ async function removeFromWishlist(courseId) {
             if (card) {
                 card.remove();
             }
+            if (typeof data.wishlistCount !== 'undefined') {
+                const badge = document.getElementById('wishlist-count-badge');
+                if (badge) {
+                    badge.textContent = data.wishlistCount;
+                }
+            }
             // Check if there are no more cards, show empty message
             const coursesDiv = document.querySelector('.courses');
-            if (coursesDiv && coursesDiv.children.length === 0) {
+            const remainingCards = coursesDiv ? coursesDiv.querySelectorAll('.course-card') : [];
+            if (coursesDiv && remainingCards.length === 0) {
                 coursesDiv.innerHTML = `
                     <div class="no-courses-msg" style="grid-column: 1 / -1; text-align: center; padding: 50px 0;">
                         <i class="fa-regular fa-heart" style="font-size: 40px; color: #EF4444; margin-bottom: 15px; display: block;"></i>

@@ -92,7 +92,7 @@ router.post('/student/wishlist/toggle/:courseId', isLoggedIn, async (req, res) =
         const user = await userModel.findById(userId);
         if (!user) return res.status(404).json({ success: false, error: 'User not found' });
 
-        const isWishlisted = user.wishlist && user.wishlist.some(id => id.toString() === courseId);
+        const isWishlisted = user.wishlist && user.wishlist.some(id => id && (id._id ? id._id.toString() : id.toString()) === courseId);
         
         let updateQuery;
         if (isWishlisted) {
@@ -101,10 +101,11 @@ router.post('/student/wishlist/toggle/:courseId', isLoggedIn, async (req, res) =
             updateQuery = { $addToSet: { wishlist: courseId } };
         }
 
-        await userModel.findByIdAndUpdate(userId, updateQuery);
+        const updatedUser = await userModel.findByIdAndUpdate(userId, updateQuery, { new: true });
+        const wishlistCount = updatedUser && updatedUser.wishlist ? updatedUser.wishlist.length : 0;
 
         if (req.headers['accept'] && req.headers['accept'].includes('application/json')) {
-            return res.json({ success: true, added: !isWishlisted });
+            return res.json({ success: true, added: !isWishlisted, wishlistCount });
         }
         res.redirect('/dashboard/student');
     } catch (err) {
@@ -121,7 +122,8 @@ router.get('/student/wishlist', isLoggedIn, async (req, res) => {
     if (req.userinfo.role !== 'student') return res.redirect('/');
     try {
         const user = await userModel.findById(req.userinfo.userid).populate('wishlist');
-        res.render('student_wishlist', { user, courses: user.wishlist || [] });
+        const wishlistedCourses = (user.wishlist || []).filter(c => c !== null);
+        res.render('student_wishlist', { user, courses: wishlistedCourses });
     } catch (err) {
         console.error('Error loading wishlist:', err);
         res.redirect('/');

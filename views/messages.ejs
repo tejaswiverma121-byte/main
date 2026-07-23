@@ -333,6 +333,7 @@
                         <a href="/student/wishlist" style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:10px; width:100%;">
                             <i class="fa-regular fa-heart"></i>
                             Wishlist
+                            <span class="sidebar-badge" style="background:#EF4444; color:#fff; font-size:11px; font-weight:600; padding:2px 7px; border-radius:10px; margin-left:auto;"><%= (user.wishlist && user.wishlist.length) || 0 %></span>
                         </a>
                     </li>
                 <% } else if (user.role === 'instructor') { %>

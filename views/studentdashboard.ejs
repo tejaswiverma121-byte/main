@@ -42,6 +42,15 @@
         .wishlist-btn-heart.active {
             color: #EF4444;
         }
+        .sidebar-badge {
+            background: #EF4444;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 10px;
+            margin-left: auto;
+        }
     </style>
 </head>
 
@@ -80,6 +89,7 @@
                 <li>
                     <i class="fa-regular fa-heart"></i>
                     Wishlist
+                    <span id="wishlist-count-badge" class="sidebar-badge"><%= (user.wishlist && user.wishlist.length) || 0 %></span>
                 </li>
             </a>
 
@@ -165,10 +175,10 @@
         <div class="search">
 
             <input
-
+            id="course-search-input"
             type="text"
-
-            placeholder="Search for courses...">
+            placeholder="Search for courses..."
+            onkeyup="filterDashboardCourses()">
 
             <i class="fa-solid fa-magnifying-glass"></i>
 
@@ -188,7 +198,7 @@
                 <% courses.forEach(course => { %>
                     <div class="course-card" style="display: flex; flex-direction: column; justify-content: space-between; position: relative;">
                         <!-- Wishlist toggle heart button -->
-                        <% const isWishlisted = user.wishlist && user.wishlist.some(cId => cId.toString() === course._id.toString()); %>
+                        <% const isWishlisted = user.wishlist && user.wishlist.some(cId => cId && (cId._id ? cId._id.toString() : cId.toString()) === course._id.toString()); %>
                         <button class="wishlist-btn-heart <%= isWishlisted ? 'active' : 'inactive' %>" onclick="toggleWishlist(this, '<%= course._id %>')" title="<%= isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist' %>">
                             <i class="<%= isWishlisted ? 'fa-solid' : 'fa-regular' %> fa-heart"></i>
                         </button>
@@ -203,7 +213,7 @@
                                 <span class="price"><%= course.price === 0 ? 'Free' : '₹' + course.price %></span>
                             </div>
                             
-                            <% if (user.purchasedCourses && user.purchasedCourses.some(cId => cId.toString() === course._id.toString())) { %>
+                            <% if (user.purchasedCourses && user.purchasedCourses.some(cId => cId && (cId._id ? cId._id.toString() : cId.toString()) === course._id.toString())) { %>
                                 <button class="enroll-btn enrolled" disabled>✓ Enrolled</button>
                             <% } else { %>
                                 <form action="/student/buy/<%= course._id %>" method="POST" style="margin: 0;">
@@ -228,6 +238,20 @@
 <%- include('partials/profile-modal') %>
 
 <script>
+function filterDashboardCourses() {
+    const query = document.getElementById('course-search-input').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.courses .course-card');
+    cards.forEach(card => {
+        const title = card.querySelector('h3') ? card.querySelector('h3').textContent.toLowerCase() : '';
+        const desc = card.querySelector('p') ? card.querySelector('p').textContent.toLowerCase() : '';
+        if (title.includes(query) || desc.includes(query)) {
+            card.style.display = 'flex';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
 async function toggleWishlist(btn, courseId) {
     try {
         const response = await fetch(`/student/wishlist/toggle/${courseId}`, {
@@ -250,6 +274,12 @@ async function toggleWishlist(btn, courseId) {
                 btn.classList.add('inactive');
                 btn.title = 'Add to Wishlist';
                 icon.className = 'fa-regular fa-heart';
+            }
+            if (typeof data.wishlistCount !== 'undefined') {
+                const badge = document.getElementById('wishlist-count-badge');
+                if (badge) {
+                    badge.textContent = data.wishlistCount;
+                }
             }
         }
     } catch (err) {
