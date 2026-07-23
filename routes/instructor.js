@@ -66,7 +66,7 @@ router.get('/dashboard/instructor/courses/:courseId/lectures', isLoggedIn, async
 
         const lectures = await lectureModel.find({ course: req.params.courseId }).sort({ order: 1 });
 
-        res.render('instructor-lectures', { course, lectures });
+        res.render('instructor-lectures', { user, course, lectures });
     } catch (err) {
         console.error('Error loading lectures:', err);
         res.redirect('/dashboard/instructor/courses');

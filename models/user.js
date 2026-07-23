@@ -8,7 +8,8 @@ let userschema=new mongoose.Schema({
     age:Number,
     role:String,
     isApproved: { type: Boolean, default: false },
-    purchasedCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'course' }]
+    purchasedCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'course' }],
+    wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'course' }]
 })
 
 module.exports=mongoose.model("user",userschema);

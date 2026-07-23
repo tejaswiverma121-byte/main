@@ -82,4 +82,50 @@ router.get('/student/course/:courseId', isLoggedIn, async (req, res) => {
     }
 });
 
+// Toggle course in wishlist
+router.post('/student/wishlist/toggle/:courseId', isLoggedIn, async (req, res) => {
+    if (req.userinfo.role !== 'student') return res.status(403).json({ success: false, error: 'Unauthorized' });
+    try {
+        const userId = req.userinfo.userid;
+        const courseId = req.params.courseId;
+
+        const user = await userModel.findById(userId);
+        if (!user) return res.status(404).json({ success: false, error: 'User not found' });
+
+        const isWishlisted = user.wishlist && user.wishlist.some(id => id.toString() === courseId);
+        
+        let updateQuery;
+        if (isWishlisted) {
+            updateQuery = { $pull: { wishlist: courseId } };
+        } else {
+            updateQuery = { $addToSet: { wishlist: courseId } };
+        }
+
+        await userModel.findByIdAndUpdate(userId, updateQuery);
+
+        if (req.headers['accept'] && req.headers['accept'].includes('application/json')) {
+            return res.json({ success: true, added: !isWishlisted });
+        }
+        res.redirect('/dashboard/student');
+    } catch (err) {
+        console.error('Error toggling wishlist:', err);
+        if (req.headers['accept'] && req.headers['accept'].includes('application/json')) {
+            return res.status(500).json({ success: false, error: 'Internal server error' });
+        }
+        res.redirect('/dashboard/student');
+    }
+});
+
+// View wishlist
+router.get('/student/wishlist', isLoggedIn, async (req, res) => {
+    if (req.userinfo.role !== 'student') return res.redirect('/');
+    try {
+        const user = await userModel.findById(req.userinfo.userid).populate('wishlist');
+        res.render('student_wishlist', { user, courses: user.wishlist || [] });
+    } catch (err) {
+        console.error('Error loading wishlist:', err);
+        res.redirect('/');
+    }
+});
+
 module.exports = router;

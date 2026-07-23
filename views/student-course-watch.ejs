@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= course.title %> | LearnHub</title>
     <link rel="stylesheet" href="/stylesheets/studentdashboard.css">
+    <link rel="stylesheet" href="/stylesheets/profile.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
@@ -270,9 +271,27 @@
                 <h1><%= course.title %></h1>
                 <p>By <strong><%= course.instructorName %></strong> &nbsp;·&nbsp; <%= course.category %></p>
             </div>
-            <div class="profile">
-                <i class="fa-regular fa-bell"></i>
-                <img src="https://i.pravatar.cc/100?img=32" alt="profile">
+            <div class="profile" style="position:relative;">
+                <i class="fa-regular fa-bell" style="cursor:default;"></i>
+                <div class="profile-avatar-wrap" id="profileAvatarWrap">
+                    <div class="avatar-initials"></div>
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <div class="dropdown-header">
+                            <div class="dropdown-avatar-lg"></div>
+                            <div>
+                                <div class="dropdown-name"><%= user.username %></div>
+                                <div class="dropdown-role"><%= user.role %></div>
+                            </div>
+                        </div>
+                        <span class="dropdown-item" onclick="openProfileModal()">
+                            <i class="fa-regular fa-user"></i> View Profile
+                        </span>
+                        <div class="dropdown-divider"></div>
+                        <a href="/logout" class="dropdown-item danger">
+                            <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -380,6 +399,8 @@
         }
     }
 </script>
+
+<%- include('partials/profile-modal') %>
 
 </body>
 </html>
