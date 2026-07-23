@@ -93,11 +93,6 @@
                 </li>
             </a>
 
-            <li>
-                <i class="fa-solid fa-chart-line"></i>
-                Progress
-            </li>
-
             <a href="/messages" style="text-decoration:none; color:inherit;">
                 <li>
                     <i class="fa-regular fa-message"></i>
@@ -213,7 +208,7 @@
                             </div>
                             
                             <% if (user.purchasedCourses && user.purchasedCourses.some(cId => cId && (cId._id ? cId._id.toString() : cId.toString()) === course._id.toString())) { %>
-                                <button class="enroll-btn enrolled" disabled>✓ Enrolled</button>
+                                <a href="/student/course/<%= course._id %>" class="enroll-btn enrolled" style="text-decoration: none; text-align: center; display: block;">▶ Watch Lectures</a>
                             <% } else { %>
                                 <form action="/student/buy/<%= course._id %>" method="POST" style="margin: 0;">
                                     <button type="submit" class="enroll-btn">Enroll / Buy</button>

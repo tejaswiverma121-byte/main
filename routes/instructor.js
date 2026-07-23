@@ -58,6 +58,7 @@ const upload = require('../middlewares/upload');
 router.get('/dashboard/instructor/courses/:courseId/lectures', isLoggedIn, async (req, res) => {
     if (req.userinfo.role !== 'instructor') return res.redirect('/');
     try {
+        const user = await userModel.findById(req.userinfo.userid);
         const course = await courseModel.findById(req.params.courseId);
 
         if (!course || course.instructor.toString() !== req.userinfo.userid) {
