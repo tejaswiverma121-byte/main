@@ -14,97 +14,313 @@ body{
     align-items:center;
 
     background:linear-gradient(
-        135deg,
+        -45deg,
         #4F46E5,
         #6D28D9,
-        #9333EA
+        #9333EA,
+        #7C3AED
     );
+
+    background-size:400% 400%;
+
+    animation:gradientMove 12s ease infinite;
 
     overflow:hidden;
 }
 
-/* floating circles */
+/* Animated Background */
+
+@keyframes gradientMove{
+
+    0%{
+        background-position:0% 50%;
+    }
+
+    50%{
+        background-position:100% 50%;
+    }
+
+    100%{
+        background-position:0% 50%;
+    }
+
+}
+
+/* Floating Circles */
 
 body::before{
+
     content:"";
+
     position:absolute;
-    width:320px;
-    height:320px;
-    background:rgba(255,255,255,0.08);
+
+    width:340px;
+
+    height:340px;
+
+    background:rgba(255,255,255,.08);
+
     border-radius:50%;
-    top:-80px;
-    left:-60px;
+
+    top:-100px;
+
+    left:-70px;
+
+    animation:circleOne 10s ease-in-out infinite alternate;
+
 }
 
 body::after{
+
     content:"";
+
     position:absolute;
-    width:260px;
-    height:260px;
-    background:rgba(255,255,255,0.08);
+
+    width:280px;
+
+    height:280px;
+
+    background:rgba(255,255,255,.08);
+
     border-radius:50%;
+
     bottom:-80px;
-    right:-50px;
+
+    right:-60px;
+
+    animation:circleTwo 12s ease-in-out infinite alternate;
+
+}
+
+@keyframes circleOne{
+
+    from{
+
+        transform:translateY(0px) rotate(0deg);
+
+    }
+
+    to{
+
+        transform:translateY(60px) rotate(25deg);
+
+    }
+
+}
+
+@keyframes circleTwo{
+
+    from{
+
+        transform:translateY(0px);
+
+    }
+
+    to{
+
+        transform:translateY(-60px);
+
+    }
+
 }
 
 .container{
 
     width:100%;
+
     display:flex;
+
     justify-content:center;
+
     align-items:center;
+
+    padding:20px;
 }
+
+/* Glass Card */
 
 .glass-card{
 
-    width:600px;
+    width:620px;
 
-    padding:50px;
+    padding:55px;
 
-    border-radius:20px;
+    border-radius:25px;
 
     background:rgba(255,255,255,.15);
 
-    backdrop-filter:blur(15px);
+    backdrop-filter:blur(18px);
 
-    border:1px solid rgba(255,255,255,.2);
+    border:1px solid rgba(255,255,255,.25);
 
     box-shadow:
-    0 15px 40px rgba(0,0,0,.25);
+    0 20px 50px rgba(0,0,0,.35);
 
     text-align:center;
 
     color:white;
+
+    position:relative;
+
+    overflow:hidden;
+
+    opacity:0;
+
+    animation:
+    fadeIn 1s ease forwards,
+    floatCard 5s ease-in-out infinite;
+
 }
+
+/* Glass Shine */
+
+.glass-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-140%;
+
+    width:60%;
+
+    height:100%;
+
+    background:linear-gradient(
+
+        120deg,
+
+        transparent,
+
+        rgba(255,255,255,.25),
+
+        transparent
+
+    );
+
+    transform:skewX(-25deg);
+
+    animation:shine 6s infinite;
+
+}
+
+@keyframes shine{
+
+    100%{
+
+        left:180%;
+
+    }
+
+}
+
+/* Fade Animation */
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(40px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* Floating Card */
+
+@keyframes floatCard{
+
+    0%{
+
+        transform:translateY(0px);
+
+    }
+
+    50%{
+
+        transform:translateY(-12px);
+
+    }
+
+    100%{
+
+        transform:translateY(0px);
+
+    }
+
+}
+
+/* Heading */
 
 .glass-card h1{
 
-    font-size:55px;
+    font-size:58px;
 
-    margin-bottom:10px;
+    margin-bottom:12px;
 
     letter-spacing:2px;
+
+    animation:titleGlow 2s ease-in-out infinite alternate;
+
+}
+
+@keyframes titleGlow{
+
+    from{
+
+        text-shadow:
+
+        0 0 5px rgba(255,255,255,.2);
+
+    }
+
+    to{
+
+        text-shadow:
+
+        0 0 22px rgba(255,255,255,.5);
+
+    }
+
 }
 
 .tagline{
 
-    font-size:20px;
+    font-size:21px;
 
-    font-weight:500;
+    font-weight:600;
 
     margin-bottom:20px;
 
     color:#F8FAFC;
+
 }
 
 .description{
 
-    line-height:1.8;
+    line-height:1.9;
 
     color:#E2E8F0;
 
     margin-bottom:40px;
+
+    font-size:16px;
+
 }
+
+/* Buttons */
 
 .buttons{
 
@@ -114,25 +330,71 @@ body::after{
 
     justify-content:center;
 
-    gap:15px;
+    gap:18px;
+
 }
 
 button{
+
+    position:relative;
+
+    overflow:hidden;
 
     border:none;
 
     cursor:pointer;
 
-    padding:14px 26px;
+    padding:15px 30px;
 
     font-size:15px;
 
     border-radius:50px;
 
+    transition:.35s;
+
     white-space:nowrap;
 
-    transition:.35s;
 }
+
+/* Button Shine */
+
+button::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-100%;
+
+    width:100%;
+
+    height:100%;
+
+    background:linear-gradient(
+
+        120deg,
+
+        transparent,
+
+        rgba(255,255,255,.45),
+
+        transparent
+
+    );
+
+    transition:.6s;
+
+}
+
+button:hover::before{
+
+    left:120%;
+
+}
+
+/* Student Login */
 
 .login-btn{
 
@@ -141,14 +403,24 @@ button{
     color:#4F46E5;
 
     font-weight:600;
+
 }
 
 .login-btn:hover{
 
-    transform:translateY(-5px);
+    transform:
 
-    box-shadow:0 10px 25px rgba(255,255,255,.4);
+    translateY(-6px)
+
+    scale(1.06);
+
+    box-shadow:
+
+    0 15px 30px rgba(255,255,255,.35);
+
 }
+
+/* Register Button */
 
 .register-btn{
 
@@ -159,6 +431,7 @@ button{
     border:2px solid white;
 
     font-weight:600;
+
 }
 
 .register-btn:hover{
@@ -167,5 +440,128 @@ button{
 
     color:#4F46E5;
 
-    transform:translateY(-5px);
+    transform:
+
+    translateY(-6px)
+
+    scale(1.06);
+
+    box-shadow:
+
+    0 15px 30px rgba(255,255,255,.35);
+
+}
+
+/* Card Hover */
+
+.glass-card:hover{
+
+    transform:
+
+    scale(1.02);
+
+    transition:.4s;
+
+}
+
+/* Responsive */
+
+@media(max-width:700px){
+
+    .glass-card{
+
+        width:95%;
+
+        padding:35px;
+
+    }
+
+    .glass-card h1{
+
+        font-size:42px;
+
+    }
+
+    .buttons{
+
+        flex-direction:column;
+
+    }
+
+    button{
+
+        width:100%;
+
+    }
+
+}
+
+.particle{
+
+    position:absolute;
+
+    width:12px;
+
+    height:12px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.45);
+
+    animation:particleMove 8s linear infinite;
+
+}
+
+.p1{
+
+    top:20%;
+    left:12%;
+
+}
+
+.p2{
+
+    top:70%;
+    left:18%;
+
+    animation-delay:2s;
+
+}
+
+.p3{
+
+    top:25%;
+    right:12%;
+
+    animation-delay:4s;
+
+}
+
+.p4{
+
+    bottom:18%;
+    right:20%;
+
+    animation-delay:6s;
+
+}
+
+@keyframes particleMove{
+
+    from{
+
+        transform:translateY(0);
+
+        opacity:.6;
+
+    }
+
+    to{
+
+        transform:translateY(-140px);
+
+        opacity:0;
+
+    }
+
 }
